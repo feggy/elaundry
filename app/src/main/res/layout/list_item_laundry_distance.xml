@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="140dp"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="3dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/vImg"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:cardCornerRadius="6dp"
+        app:cardUseCompatPadding="true">
+
+        <ImageView
+            android:id="@+id/imgStore"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/laundry_store" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/vNamaStore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vImg"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="5dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        tools:text="Jaya Selalu Laundry - Bangkinang" />
+
+    <TextView
+        android:id="@+id/vDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vNamaStore"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="5dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="@color/grey"
+        android:textSize="11sp"
+        tools:text="1.1 km" />
+
+</RelativeLayout>
