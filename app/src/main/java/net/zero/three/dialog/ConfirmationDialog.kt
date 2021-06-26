@@ -21,7 +21,8 @@ class ConfirmationDialog : DialogFragment() {
             title_positive: String = "",
             title_negative: String = "",
             callbackPositive: () -> Unit,
-            callbackNegative: (() -> Unit)? = null
+            callbackNegative: (() -> Unit)? = null,
+            close_button: Boolean? = false
         ) = ConfirmationDialog().apply {
             this.title = title
             this.description = description
@@ -29,6 +30,7 @@ class ConfirmationDialog : DialogFragment() {
             this.title_negative = title_negative
             this.callbackPositive = callbackPositive
             this.callbackNegative = callbackNegative
+            this.close_button = close_button
         }.show(fm, "")
     }
 
@@ -36,6 +38,7 @@ class ConfirmationDialog : DialogFragment() {
     private var description = ""
     private var title_positive = ""
     private var title_negative = ""
+    private var close_button: Boolean? = false
 
     lateinit var callbackPositive: () -> Unit
     var callbackNegative: (() -> Unit)? = null
@@ -67,6 +70,7 @@ class ConfirmationDialog : DialogFragment() {
         contentTxt?.text = description
         btnCancel?.text = if (title_negative == "") "Tidak" else title_negative
         btnOk?.text = if (title_positive == "") "Ya" else title_positive
+        if (close_button == true) btnClose.visibility = View.VISIBLE
     }
 
     private fun eventUI() {
@@ -77,6 +81,10 @@ class ConfirmationDialog : DialogFragment() {
 
         btnCancel?.setOnClickListener {
             callbackNegative?.invoke()
+            dismiss()
+        }
+
+        btnClose.setOnClickListener {
             dismiss()
         }
     }

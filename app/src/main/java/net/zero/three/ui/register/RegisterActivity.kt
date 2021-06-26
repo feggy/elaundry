@@ -5,15 +5,20 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.text.InputType
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -29,9 +34,12 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import net.zero.three.dialog.ConfirmationDialog
+import net.zero.three.dialog.ListUniversalDialog
 import net.zero.three.dialog.LoadingDialog
+import net.zero.three.toEditable
 import net.zero.three.ui.login.LoginActivity
 import net.zero.three.viewmodel.AuthViewModel
+import java.io.InputStream
 import java.lang.Exception
 
 
@@ -70,6 +78,13 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
             }
         }
 
+    private val reqOpenGallery =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            it.data?.data?.let {
+                _vm.imageStore.value = getImage(it)
+            }
+        }
+
     var lat: Double = 0.0
     var lng: Double = 0.0
     var loc: Location? = null
@@ -97,6 +112,11 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
 
     lateinit var _vm: AuthViewModel
 
+    val dataJenisAkun = arrayListOf(
+        ListUniversalDialog.Item(0, "Pelanggan"),
+        ListUniversalDialog.Item(1, "Merchant")
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -115,12 +135,41 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
     }
 
     private fun initUI() {
+        etAlamat.imeOptions = EditorInfo.IME_ACTION_DONE
+        etAlamat.setRawInputType(InputType.TYPE_CLASS_TEXT)
 
+        _vm.imageStore.observe(this, {
+            it?.let {
+                lytImgStore.visibility = View.VISIBLE
+                lytAddStore.visibility = View.GONE
+                imgStore.setImageBitmap(it)
+            }
+        })
     }
 
     private fun eventUI() {
         vToolbar.setNavigationOnClickListener {
             onBackPressed()
+        }
+
+        etLevel.setOnClickListener {
+            ListUniversalDialog.show(supportFragmentManager, dataJenisAkun) {
+                etLevel.text = it.name.toEditable()
+
+                if (it.id == 1) {
+                    tilNamaToko.visibility = View.VISIBLE
+                    btnImgStore.visibility = View.VISIBLE
+                } else {
+                    tilNamaToko.visibility = View.GONE
+                    btnImgStore.visibility = View.GONE
+                }
+            }
+        }
+
+        btnImgStore.setOnClickListener {
+            val i = Intent(Intent.ACTION_PICK)
+            i.type = "image/*"
+            reqOpenGallery.launch(i)
         }
 
         btnRegister.setOnClickListener {
@@ -216,8 +265,8 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
     }
 
     private fun getLatLong() {
-        vProgress.visibility = View.VISIBLE
         Toast.makeText(applicationContext, "Sedang mencari koordinat...", Toast.LENGTH_SHORT).show()
+        lytKoordinat.visibility = View.VISIBLE
         vLatitude.text = "Latitude: ${getLocation()!!.latitude}"
         vLongitude.text = "Longitude: ${getLocation()!!.longitude}"
 
@@ -246,7 +295,7 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
                         Toast.LENGTH_LONG
                     ).show()
                     btnRegister.text = "Set Koordinat"
-                    lytLL.visibility = View.GONE
+//                    lytLL.visibility = View.GONE
                     return false
                 }
 
@@ -264,7 +313,7 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
                     ).show()
                     enableRegister = true
                     btnRegister.text = "Daftar"
-                    lytLL.visibility = View.VISIBLE
+//                    lytLL.visibility = View.VISIBLE
                     return false
                 }
 
@@ -272,11 +321,6 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
             .placeholder(circularProgressDrawable)
             .error(R.drawable.refresh)
             .into(imgAddress)
-
-        Handler().postDelayed({
-            lytKoordinat.visibility = View.VISIBLE
-            vProgress.visibility = View.GONE
-        }, 1000)
     }
 
     private fun checkPermission(): Boolean {
@@ -415,6 +459,13 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
             e.printStackTrace()
         }
         return loc
+    }
+
+    private fun getImage(imageUri: Uri): Bitmap {
+        val inputStream: InputStream? = contentResolver.openInputStream(imageUri)
+        val selectImage = BitmapFactory.decodeStream(inputStream)
+
+        return selectImage
     }
 
 

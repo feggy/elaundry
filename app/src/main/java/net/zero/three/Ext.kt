@@ -1,6 +1,7 @@
 package net.zero.three
 
 import android.content.Context
+import android.text.Editable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import java.io.BufferedReader
@@ -42,3 +43,5 @@ fun String.isNumeric(): Boolean {
 fun String.isEmail(): Boolean {
     return this.matches(("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$").toRegex())
 }
+
+fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)

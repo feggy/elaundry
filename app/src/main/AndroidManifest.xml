@@ -19,6 +19,15 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.store.StoreActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.riwayat.RiwayatActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.order.OrderActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.profile.ProfileActivity"
             android:exported="true" />
         <activity

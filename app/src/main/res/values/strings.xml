@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">E-Laundry</string>
     <string name="cs_rio">Tingkatkan akun kamu agar dapat menggunakan layanan yang ada pada aplikasi kami, Hubungi Admin Rio pada nomor <i><b>+62822-8315-2687</b></i></string>
+    <string name="lbl_data_pelanggan"><u>Data Pelanggan</u></string>
+    <string name="lbl_data_laundry"><u>Data Laundry</u></string>
+    <string name="lbl_informasi_pesanan"><u>Informasi Pesanan</u></string>
+    <string name="desc_laundry">Pesanan kamu kosong nih\nmau laundry hari ini?\n<u><b>Klik disini</b></u></string>
 </resources>

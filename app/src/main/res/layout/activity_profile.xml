@@ -11,13 +11,13 @@
         android:id="@+id/vToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/back_icon_grey"/>
+        app:navigationIcon="@drawable/back_icon_grey" />
 
     <ImageView
         android:id="@+id/imgToko"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/ic_logo"/>
+        android:src="@drawable/ic_logo" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/vAvatar"
@@ -157,12 +157,22 @@
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
-                <ImageView
-                    android:id="@+id/imgAddress"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:layout_marginTop="3dp"
-                    android:src="@drawable/refresh" />
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="true">
+
+                    <ImageView
+                        android:id="@+id/imgAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="3dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/refresh" />
+
+                </androidx.cardview.widget.CardView>
 
                 <Button
                     android:id="@+id/btnRefresh"
@@ -189,14 +199,14 @@
         android:id="@+id/btnLogout"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Logout"
-        android:background="@drawable/bg_rounded_blue"
-        android:textColor="@color/white"
-        android:fontFamily="@font/montserrat_semi_bold"
         android:layout_below="@id/lytDesc"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="-25dp"
-        android:textSize="14sp"
-        android:layout_centerHorizontal="true"/>
+        android:background="@drawable/bg_rounded_blue"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="Logout"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
 
 </RelativeLayout>
