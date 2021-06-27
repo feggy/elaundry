@@ -446,10 +446,10 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_regular"
                         android:singleLine="true"
+                        android:text="Rp0"
                         android:textAlignment="textEnd"
                         android:textColor="@color/grey"
-                        android:textSize="11sp"
-                        tools:text="Rp.0" />
+                        android:textSize="11sp" />
 
                 </LinearLayout>
 
@@ -475,10 +475,10 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_regular"
                         android:singleLine="true"
+                        android:text="Rp0"
                         android:textAlignment="textEnd"
                         android:textColor="@color/grey"
-                        android:textSize="11sp"
-                        tools:text="Rp.0" />
+                        android:textSize="11sp" />
 
                 </LinearLayout>
 
@@ -504,10 +504,10 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_regular"
                         android:singleLine="true"
+                        android:text="Rp0"
                         android:textAlignment="textEnd"
                         android:textColor="@color/grey"
-                        android:textSize="11sp"
-                        tools:text="Rp.0" />
+                        android:textSize="11sp" />
 
                 </LinearLayout>
 

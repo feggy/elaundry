@@ -43,13 +43,17 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun getDetailAkun() = authRepository.getDetailAkun()
 
     fun reqOrder(
-        idUser: Int,
-        idMerchant: Int,
+        idUser: String,
+        idMerchant: String,
         namaCucian: String,
-        berat: Int,
-        amount: Int,
-        fee: Int
-    ) = authRepository.reqOrder(idUser, idMerchant, namaCucian, berat, amount, fee)
+        berat: String,
+        amount: String,
+        amountSatuan: String,
+        fee: String,
+        catatan: String
+    ) = authRepository.reqOrder(idUser, idMerchant, namaCucian, berat, amount, amountSatuan, fee, catatan)
 
     fun getStore(nearest: Boolean? = false, lat: String? = "", long: String? = "") = authRepository.getStore(nearest, lat, long)
+
+    fun getHistory(status: String) = authRepository.getHistory(status)
 }

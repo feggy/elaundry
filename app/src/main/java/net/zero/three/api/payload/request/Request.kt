@@ -24,16 +24,23 @@ data class ReqRegister(
 )
 
 data class ReqOrder(
-    @SerializedName("idUser") val idUser: Int,
-    @SerializedName("idMerchant") val idMerchant: Int,
+    @SerializedName("idUser") val idUser: String,
+    @SerializedName("idMerchant") val idMerchant: String,
     @SerializedName("namaCucian") val namaCucian: String,
-    @SerializedName("berat") val berat: Int,
-    @SerializedName("amount") val amount: Int,
-    @SerializedName("fee") val fee: Int,
+    @SerializedName("berat") val berat: String,
+    @SerializedName("amount") val amount: String,
+    @SerializedName("amountSatuan") val amountSatuan: String,
+    @SerializedName("fee") val fee: String,
+    @SerializedName("catatan") val catatan: String
 )
 
 data class ReqStore(
     @SerializedName("nearest") var nearest: Boolean? = false,
     @SerializedName("lat") var lat: String? = "",
     @SerializedName("long") var long: String? = ""
+)
+
+data class ReqHistory(
+    @SerializedName("noHp") var noHp: String?,
+    @SerializedName("status") var status: String
 )

@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 "Pesan Sekarang",
                 "Navigasi",
                 callbackPositive = {
-                    OrderActivity.show(this)
+                    OrderActivity.show(this, it)
                 }, callbackNegative = {
                     val i = Intent(Intent.ACTION_VIEW)
                     i.data =
@@ -109,14 +109,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnOrder.setOnClickListener {
-            OrderActivity.show(this)
-        }
-
-        btnAddOrder.setOnClickListener {
-            OrderActivity.show(this)
+            StoreActivity.show(this)
         }
 
         btnSeeAllStore.setOnClickListener {
+            StoreActivity.show(this)
+        }
+
+        btnHistory.setOnClickListener {
+            RiwayatActivity.show(this)
+        }
+
+        btnAddOrder.setOnClickListener {
             StoreActivity.show(this)
         }
 

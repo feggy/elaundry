@@ -7,6 +7,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun View.hideKeyboard(): Boolean {
     try {
@@ -87,4 +90,24 @@ fun getDataDistance(lat1: String, long1: String, lat2: String, long2: String): D
     solution = Math.round(number2digits * 10.0) / 10.0
 
     return solution
+}
+
+fun String.convertDate(
+    startFormat: String,
+    endFormat: String,
+    locale: Locale
+): String {
+    val inputFormat = SimpleDateFormat(startFormat, locale)
+    val outputFormat = SimpleDateFormat(endFormat, locale)
+    val parsed: Date?
+    var outputText = ""
+
+    try {
+        parsed = inputFormat.parse(this)
+        outputText = outputFormat.format(parsed!!)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    return outputText
 }

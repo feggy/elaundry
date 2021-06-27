@@ -2,10 +2,7 @@ package net.zero.three.api.private_interface
 
 
 import net.zero.three.api.payload.Resource
-import net.zero.three.api.payload.request.ReqLogin
-import net.zero.three.api.payload.request.ReqOrder
-import net.zero.three.api.payload.request.ReqRegister
-import net.zero.three.api.payload.request.ReqStore
+import net.zero.three.api.payload.request.*
 import net.zero.three.api.payload.response.*
 import retrofit2.Call
 import retrofit2.http.Body
@@ -28,5 +25,8 @@ interface AuthInterface {
     fun reqOrder(@Body reqOrder: ReqOrder): Call<Resource<ResOrder>>
 
     @POST("laundry/list/store")
-    fun getStore(@Body reqStore: ReqStore) : Call<Resource<List<ResStore>>>
+    fun getStore(@Body reqStore: ReqStore): Call<Resource<List<ResStore>>>
+
+    @POST("laundry/history/transaksi")
+    fun getHistory(@Body reqHistory: ReqHistory): Call<Resource<List<ResHistory>>>
 }

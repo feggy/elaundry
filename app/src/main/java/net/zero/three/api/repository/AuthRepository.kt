@@ -5,10 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import net.zero.three.api.RetrofitFactory
 import net.zero.three.api.payload.Resource
-import net.zero.three.api.payload.request.ReqLogin
-import net.zero.three.api.payload.request.ReqOrder
-import net.zero.three.api.payload.request.ReqRegister
-import net.zero.three.api.payload.request.ReqStore
+import net.zero.three.api.payload.request.*
 import net.zero.three.api.payload.response.*
 import net.zero.three.persistant.SessionManager
 import retrofit2.Call
@@ -133,16 +130,29 @@ class AuthRepository() {
     }
 
     fun reqOrder(
-        idUser: Int,
-        idMerchant: Int,
+        idUser: String,
+        idMerchant: String,
         namaCucian: String,
-        berat: Int,
-        amount: Int,
-        fee: Int
+        berat: String,
+        amount: String,
+        amountSatuan: String,
+        fee: String,
+        catatan: String
     ): LiveData<Resource<ResOrder>> {
         val liveData = MutableLiveData<Resource<ResOrder>>()
 
-        auth.reqOrder(ReqOrder(idUser, idMerchant, namaCucian, berat, amount, fee))
+        auth.reqOrder(
+            ReqOrder(
+                idUser,
+                idMerchant,
+                namaCucian,
+                berat,
+                amount,
+                amountSatuan,
+                fee,
+                catatan
+            )
+        )
             .enqueue(object : Callback<Resource<ResOrder>> {
                 override fun onResponse(
                     call: Call<Resource<ResOrder>>,
@@ -167,7 +177,11 @@ class AuthRepository() {
         return liveData
     }
 
-    fun getStore(nearest: Boolean? = false, lat: String? = "", long: String? = ""): LiveData<Resource<List<ResStore>>> {
+    fun getStore(
+        nearest: Boolean? = false,
+        lat: String? = "",
+        long: String? = ""
+    ): LiveData<Resource<List<ResStore>>> {
         val liveData = MutableLiveData<Resource<List<ResStore>>>()
 
         auth.getStore(ReqStore(nearest, lat, long))
@@ -189,6 +203,34 @@ class AuthRepository() {
                 }
 
                 override fun onFailure(call: Call<Resource<List<ResStore>>>, t: Throwable) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
+
+    fun getHistory(status: String): LiveData<Resource<List<ResHistory>>> {
+        val liveData = MutableLiveData<Resource<List<ResHistory>>>()
+
+        auth.getHistory(ReqHistory(SessionManager.instance.nohp, status))
+            .enqueue(object : Callback<Resource<List<ResHistory>>> {
+                override fun onResponse(
+                    call: Call<Resource<List<ResHistory>>>,
+                    response: Response<Resource<List<ResHistory>>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<Resource<List<ResHistory>>>, t: Throwable) {
                     Log.e("ONFAILURE", "$t")
                 }
             })

@@ -75,4 +75,22 @@ data class ResStore(
     @SerializedName("image_store") val image_store : String,
     @SerializedName("distance") val distance : String,
     @SerializedName("profile_photo_url") val profile_photo_url : String
+): Serializable
+
+data class ResHistory(
+    @SerializedName("id") val id : String,
+    @SerializedName("id_user") val id_user : String,
+    @SerializedName("id_merchant") val id_merchant : String,
+    @SerializedName("nama_cucian") val nama_cucian : String,
+    @SerializedName("berat") val berat : String,
+    @SerializedName("amount_satuan") val amount_satuan : String,
+    @SerializedName("amount") val amount : String,
+    @SerializedName("status") val status : String,
+    @SerializedName("status_pembayaran") val status_pembayaran : String,
+    @SerializedName("status_pengerjaan") val status_pengerjaan : String,
+    @SerializedName("created_at") val created_at : String,
+    @SerializedName("updated_at") val updated_at : String,
+    @SerializedName("fee") val fee : String,
+    @SerializedName("catatan") val catatan : String,
+    @SerializedName("store_name") val store_name : String
 )

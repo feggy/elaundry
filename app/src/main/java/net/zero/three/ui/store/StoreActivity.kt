@@ -34,41 +34,6 @@ class StoreActivity : AppCompatActivity() {
         }
     }
 
-    val data = arrayListOf(
-        Store(
-            "Hidup Baru Coin",
-            0.0,
-            "https://cutt.ly/pmedFOs",
-            "-6.260849",
-            "106.794295",
-            "Jl. Hidup Baru 2-11, RW.6, Gandaria Utara, Kec. Kby. Baru, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12140"
-        ),
-        Store(
-            "Fatmawati Laundry Amanah",
-            0.0,
-            "https://cutt.ly/qmedLd7",
-            "-6.260457",
-            "106.793307",
-            "Jl. Karya Utama No.3, RT.11/RW.3, Gandaria Utara, Kec. Kby. Baru, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12140"
-        ),
-        Store(
-            "Professional Jakarta Laundry",
-            0.0,
-            "https://cutt.ly/MmedVmM",
-            "-6.259833",
-            "106.794404",
-            "RT.7/RW.6, Gandaria Utara, Kec. Kby. Baru, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta"
-        ),
-        Store(
-            "Speed Queen Laundry",
-            0.0,
-            "https://cutt.ly/ImedME5",
-            "-6.260165",
-            "106.796891",
-            "Jl. Damai Raya, RT.6/RW.5, Cipete Utara, Kec. Kby. Baru, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12150"
-        )
-    )
-
     lateinit var _vm: AuthViewModel
 
     var myLat = ""
@@ -106,7 +71,7 @@ class StoreActivity : AppCompatActivity() {
                 "Pesan Sekarang",
                 "Navigasi",
                 callbackPositive = {
-                    OrderActivity.show(this)
+                    OrderActivity.show(this, it)
                 }, callbackNegative = {
                     val i = Intent(Intent.ACTION_VIEW)
                     i.data =
@@ -123,7 +88,9 @@ class StoreActivity : AppCompatActivity() {
     }
 
     private fun eventUI() {
-        
+        vToolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun getDetailAkun() {
