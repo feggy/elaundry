@@ -9,10 +9,13 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import net.zero.three.R
 import net.zero.three.persistant.SessionManager
 import net.zero.three.ui.MainActivity
 import net.zero.three.ui.login.LoginActivity
+import net.zero.three.viewmodel.AuthViewModel
+import timber.log.Timber
 
 class SplashActivity : AppCompatActivity() {
     companion object {
@@ -41,21 +44,37 @@ class SplashActivity : AppCompatActivity() {
         Manifest.permission.ACCESS_FINE_LOCATION
     )
 
+    private lateinit var _vm: AuthViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+        _vm = ViewModelProvider(this).get(AuthViewModel::class.java)
 
         if (checkPermissions()) {
             Handler().postDelayed({
                 if (SessionManager.instance.nohp.isNullOrEmpty()) {
                     LoginActivity.show(this)
                 } else {
-                    MainActivity.show(this)
+                    getDetailAkun()
                 }
             }, 1000)
         } else {
             requestPermissions()
         }
+    }
+
+    private fun getDetailAkun() {
+        _vm.getDetailAkun().observe(this, {
+            when (it?.status) {
+                true -> {
+                    it.data?.let {
+                        MainActivity.show(this)
+                    }
+                }
+            }
+        })
     }
 
     private fun checkPermissions(): Boolean {

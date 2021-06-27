@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_order.*
 import net.zero.three.R
 import net.zero.three.dialog.ConfirmationDialog
+import net.zero.three.dialog.InputDialog
+import net.zero.three.toCurrency
 import net.zero.three.toEditable
 import net.zero.three.viewmodel.AuthViewModel
 
@@ -43,7 +45,7 @@ class OrderActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        vBerat.text = "0.0 kg".toEditable()
+        vBerat.text = "0.0".toEditable()
         _vm.berat.observe(this, {
             it?.let {
                 beratSekarang = Math.round(it * 100) / 100.0
@@ -51,7 +53,14 @@ class OrderActivity : AppCompatActivity() {
                 if (beratSekarang < 0) {
                     beratSekarang = 0.0
                 }
+                val totalAmount = beratSekarang * 7000
+                val adminFee = totalAmount * 0.01
+                val grandTotal = totalAmount + adminFee
+
                 vBerat.text = "$beratSekarang".toEditable()
+                vTotalAmount.text = totalAmount.toCurrency("Rp")
+                vBiayaLayanan.text = adminFee.toCurrency("Rp")
+                vGrandTotal.text = grandTotal.toCurrency("Rp")
             }
         })
     }
@@ -59,6 +68,12 @@ class OrderActivity : AppCompatActivity() {
     private fun eventUI() {
         vToolbar.setNavigationOnClickListener {
             onBackPressed()
+        }
+
+        vBerat.setOnClickListener {
+            InputDialog.show(supportFragmentManager) {
+                _vm.berat.value = it.toDouble()
+            }
         }
 
         btnShowCustomer.setOnClickListener {

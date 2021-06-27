@@ -18,9 +18,10 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_store.*
 import net.zero.three.R
+import net.zero.three.api.payload.response.ResStore
 import net.zero.three.dialog.ConfirmationDialog
 import net.zero.three.dialog.LoadingDialog
-import net.zero.three.ui.MainActivity
+import net.zero.three.distanceInKm
 import net.zero.three.ui.order.OrderActivity
 import net.zero.three.viewmodel.AuthViewModel
 
@@ -74,7 +75,7 @@ class StoreActivity : AppCompatActivity() {
     var myLong = ""
 
     lateinit var adapterLaundryDistance: StoreAdapter
-    var dataLaundryDistance = ArrayList<Store>()
+    var dataLaundryDistance = ArrayList<ResStore>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,6 +97,28 @@ class StoreActivity : AppCompatActivity() {
 
     private fun initUI() {
         getDetailAkun()
+
+        adapterLaundryDistance = StoreAdapter(dataLaundryDistance) {
+            ConfirmationDialog.show(
+                supportFragmentManager,
+                "Pesan Sekarang",
+                "Ingin melakukan pemesanan sekarang atau butuh bantuan navigasi ke lokasi laundry?",
+                "Pesan Sekarang",
+                "Navigasi",
+                callbackPositive = {
+                    OrderActivity.show(this)
+                }, callbackNegative = {
+                    val i = Intent(Intent.ACTION_VIEW)
+                    i.data =
+                        Uri.parse("http://maps.google.com/maps?saddr=$myLat,$myLong&daddr=${it.latitude},${it.longitude}")
+                    startActivity(i)
+                },
+                close_button = true
+            )
+        }
+        vRecylerStore.layoutManager =
+            LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
+        vRecylerStore.adapter = adapterLaundryDistance
         
     }
 
@@ -109,36 +132,12 @@ class StoreActivity : AppCompatActivity() {
             LoadingDialog.close(supportFragmentManager)
             when (it?.status) {
                 true -> {
-                    it.data?.get(0)?.let {
+                    it.data?.let {
 
                         myLat = it.latitude
                         myLong = it.longitude
 
-                        getDataDistance()
-
-                        dataLaundryDistance.sortedByDescending { it.distance }
-
-                        adapterLaundryDistance = StoreAdapter(dataLaundryDistance) {
-                                ConfirmationDialog.show(
-                                    supportFragmentManager,
-                                    "Pesan Sekarang",
-                                    "Ingin melakukan pemesanan sekarang atau butuh bantuan navigasi ke lokasi laundry?",
-                                    "Pesan Sekarang",
-                                    "Navigasi",
-                                    callbackPositive = {
-                                        OrderActivity.show(this)
-                                    }, callbackNegative = {
-                                        val i = Intent(Intent.ACTION_VIEW)
-                                        i.data =
-                                            Uri.parse("http://maps.google.com/maps?saddr=$myLat,$myLong&daddr=${it.lat},${it.long}")
-                                        startActivity(i)
-                                    },
-                                    close_button = true
-                                )
-                            }
-                        vRecylerStore.layoutManager =
-                            LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
-                        vRecylerStore.adapter = adapterLaundryDistance
+                        getStore(myLat, myLong)
                     }
                 }
                 false -> {
@@ -148,39 +147,25 @@ class StoreActivity : AppCompatActivity() {
         })
     }
 
-    private fun getDataDistance() {
-        data.forEach {
-            val loc1 = Location("")
-            loc1.latitude = myLat.toDouble()
-            loc1.longitude = myLong.toDouble()
+    private fun getStore(lat: String, long: String) {
+        _vm.getStore(true, lat, long).observe(this, {
+            when (it?.status) {
+                true -> {
+                    it.data?.let {
+                        dataLaundryDistance.addAll(it)
+                        adapterLaundryDistance.notifyDataSetChanged()
+                    }
+                }
+                false -> {
 
-            val loc2 = Location("")
-            loc2.latitude = it.lat.toDouble()
-            loc2.longitude = it.long.toDouble()
-
-            val distanceInMeters = loc1.distanceTo(loc2)
-
-            val distanceInKm = distanceInMeters * 0.001
-            val number3digits: Double = Math.round(distanceInKm * 1000.0) / 1000.0
-            val number2digits: Double = Math.round(number3digits * 100.0) / 100.0
-            val solution: Double = Math.round(number2digits * 10.0) / 10.0
-
-            dataLaundryDistance.add(
-                Store(
-                    it.nama,
-                    solution,
-                    it.image,
-                    it.lat,
-                    it.long,
-                    it.alamat
-                )
-            )
-        }
+                }
+            }
+        })
     }
 
     class StoreAdapter(
-        val data: ArrayList<Store>,
-        val callback: (Store) -> Unit
+        val data: ArrayList<ResStore>,
+        val callback: (ResStore) -> Unit
     ) : RecyclerView.Adapter<StoreAdapter.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val inflater = LayoutInflater.from(parent.context)
@@ -202,10 +187,10 @@ class StoreActivity : AppCompatActivity() {
             val vJarak: TextView = itemView.findViewById(R.id.vJarak)
             val vAlamatToko: TextView = itemView.findViewById(R.id.vAlamatToko)
 
-            fun bind(item: Store, callback: (Store) -> Unit) {
-                vNamaToko.text = item.nama
-                vJarak.text = "${item.distance} km"
-                vAlamatToko.text = item.alamat
+            fun bind(item: ResStore, callback: (ResStore) -> Unit) {
+                vNamaToko.text = item.store_name
+                vJarak.text = "${item.distance.toDouble().distanceInKm()} km"
+                vAlamatToko.text = item.address
 
                 val circularProgressDrawable = CircularProgressDrawable(itemView.context)
                 circularProgressDrawable.strokeWidth = 5f
@@ -213,7 +198,7 @@ class StoreActivity : AppCompatActivity() {
                 circularProgressDrawable.start()
 
                 Glide.with(itemView)
-                    .load(item.image)
+                    .load(item.image_store)
                     .placeholder(circularProgressDrawable)
                     .error(R.drawable.laundry_store)
                     .into(vImage)

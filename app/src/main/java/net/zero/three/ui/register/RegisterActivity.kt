@@ -1,6 +1,7 @@
 package net.zero.three.ui.register
 
 import android.Manifest
+import android.R.attr
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -41,6 +42,12 @@ import net.zero.three.ui.login.LoginActivity
 import net.zero.three.viewmodel.AuthViewModel
 import java.io.InputStream
 import java.lang.Exception
+import android.R.attr.bitmap
+import android.util.Base64
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.default
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 
 class RegisterActivity : AppCompatActivity(), LocationListener {
@@ -81,7 +88,9 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
     private val reqOpenGallery =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             it.data?.data?.let {
-                _vm.imageStore.value = getImage(it)
+                val bitmap = getImage(it)
+                val scaleBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width, 120, true)
+                _vm.imageStore.value = scaleBitmap
             }
         }
 
@@ -109,6 +118,9 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
     var email = ""
     var alamat = ""
     var message = ""
+    var level = ""
+    var imagestore = ""
+    var storeName = ""
 
     lateinit var _vm: AuthViewModel
 
@@ -143,6 +155,7 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
                 lytImgStore.visibility = View.VISIBLE
                 lytAddStore.visibility = View.GONE
                 imgStore.setImageBitmap(it)
+                imagestore = bitmapToBase64(it)
             }
         })
     }
@@ -154,7 +167,8 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
 
         etLevel.setOnClickListener {
             ListUniversalDialog.show(supportFragmentManager, dataJenisAkun) {
-                etLevel.text = it.name.toEditable()
+                level = it.name
+                etLevel.text = level.toEditable()
 
                 if (it.id == 1) {
                     tilNamaToko.visibility = View.VISIBLE
@@ -167,9 +181,18 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
         }
 
         btnImgStore.setOnClickListener {
-            val i = Intent(Intent.ACTION_PICK)
-            i.type = "image/*"
-            reqOpenGallery.launch(i)
+            ConfirmationDialog.show(
+                supportFragmentManager,
+                "Aturan Foto",
+                "Foto yang digunakan harus berbentuk Landscape, yaitu memanjang kesamping dan menampilkan keseluruhan tampak depan toko Anda",
+                "OK",
+                "Batal",
+                callbackPositive = {
+                    val i = Intent(Intent.ACTION_PICK)
+                    i.type = "image/*"
+                    reqOpenGallery.launch(i)
+                }
+            )
         }
 
         btnRegister.setOnClickListener {
@@ -205,11 +228,12 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
         alamat = etAlamat.text.toString()
         pass = etPassword.text.toString()
         email = etEmail.text.toString()
+        storeName = etNamaToko.text.toString()
 
         LoadingDialog.show(supportFragmentManager)
 
         if (validation()) {
-            _vm.register(nama, nohp, pass, alamat, email, lat.toString(), lng.toString())
+            _vm.register(nama, nohp, pass, alamat, email, lat.toString(), lng.toString(), level, imagestore, storeName)
                 .observe(this, {
                     LoadingDialog.close(supportFragmentManager)
                     when (it?.status) {
@@ -468,6 +492,13 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
         return selectImage
     }
 
+    private fun bitmapToBase64(bitmap: Bitmap): String {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream)
+        val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
+
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
 
     override fun onLocationChanged(location: Location) {
 

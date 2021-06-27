@@ -1,6 +1,7 @@
 package net.zero.three
 
 import android.content.Context
+import android.location.Location
 import android.text.Editable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -45,3 +46,45 @@ fun String.isEmail(): Boolean {
 }
 
 fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
+
+fun Double.toCurrency(code: String): String {
+    var run = ""
+    if (this < 0.0) {
+        val harga = this.toString().replace("-", "").toDouble()
+        run = StringBuilder("-" + code + "" + String.format("%,.0f", harga)).toString().replace(",", ".")
+    } else {
+        run = StringBuilder(code + "" + String.format("%,.0f", this)).toString().replace(",", ".")
+    }
+
+    return run
+}
+
+fun Double.distanceInKm() : Double {
+//    val distanceInKm = this * 0.001
+    val number3digits: Double = Math.round(this * 1000.0) / 1000.0
+    val number2digits: Double = Math.round(number3digits * 100.0) / 100.0
+    val solution = Math.round(number2digits * 10.0) / 10.0
+
+    return solution
+}
+
+fun getDataDistance(lat1: String, long1: String, lat2: String, long2: String): Double {
+    var solution: Double = 0.0
+
+    val loc1 = Location("")
+    loc1.latitude = lat1.toDouble()
+    loc1.longitude = long1.toDouble()
+
+    val loc2 = Location("")
+    loc2.latitude = lat2.toDouble()
+    loc2.longitude = long2.toDouble()
+
+    val distanceInMeters = loc1.distanceTo(loc2)
+
+    val distanceInKm = distanceInMeters * 0.001
+    val number3digits: Double = Math.round(distanceInKm * 1000.0) / 1000.0
+    val number2digits: Double = Math.round(number3digits * 100.0) / 100.0
+    solution = Math.round(number2digits * 10.0) / 10.0
+
+    return solution
+}

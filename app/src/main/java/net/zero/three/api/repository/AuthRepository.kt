@@ -6,10 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import net.zero.three.api.RetrofitFactory
 import net.zero.three.api.payload.Resource
 import net.zero.three.api.payload.request.ReqLogin
+import net.zero.three.api.payload.request.ReqOrder
 import net.zero.three.api.payload.request.ReqRegister
-import net.zero.three.api.payload.response.ResDetailAkun
-import net.zero.three.api.payload.response.ResLogin
-import net.zero.three.api.payload.response.ResRegister
+import net.zero.three.api.payload.request.ReqStore
+import net.zero.three.api.payload.response.*
 import net.zero.three.persistant.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
@@ -58,11 +58,27 @@ class AuthRepository() {
         alamat: String,
         email: String,
         lat: String,
-        lng: String
+        lng: String,
+        level: String,
+        imageStore: String,
+        storeName: String
     ): LiveData<Resource<ResRegister>> {
         val liveData = MutableLiveData<Resource<ResRegister>>()
 
-        auth.register(ReqRegister(nama, nohp, alamat, email, lat, lng, password))
+        auth.register(
+            ReqRegister(
+                nama,
+                nohp,
+                alamat,
+                email,
+                lat,
+                lng,
+                password,
+                level,
+                imageStore,
+                storeName
+            )
+        )
             .enqueue(object : Callback<Resource<ResRegister>> {
                 override fun onResponse(
                     call: Call<Resource<ResRegister>>,
@@ -88,30 +104,94 @@ class AuthRepository() {
         return liveData
     }
 
-    fun getDetailAkun() : LiveData<Resource<List<ResDetailAkun>>> {
-        val liveData = MutableLiveData<Resource<List<ResDetailAkun>>>()
+    fun getDetailAkun(): LiveData<Resource<ResDetailAkun>> {
+        val liveData = MutableLiveData<Resource<ResDetailAkun>>()
 
-        auth.getAkunDetail(SessionManager.instance.nohp).enqueue(object : Callback<Resource<List<ResDetailAkun>>> {
-            override fun onResponse(
-                call: Call<Resource<List<ResDetailAkun>>>,
-                response: Response<Resource<List<ResDetailAkun>>>
-            ) {
-                if (response.isSuccessful) {
-                    liveData.value = response.body()
-                } else {
-                    liveData.value = Resource(
-                        false,
-                        null,
-                        response.body()?.message.toString(),
-                        response.body()?.code
-                    )
+        auth.getAkunDetail(SessionManager.instance.nohp)
+            .enqueue(object : Callback<Resource<ResDetailAkun>> {
+                override fun onResponse(
+                    call: Call<Resource<ResDetailAkun>>,
+                    response: Response<Resource<ResDetailAkun>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<Resource<List<ResDetailAkun>>>, t: Throwable) {
-                Log.e("ONFAILURE", "$t")
-            }
-        })
+                override fun onFailure(call: Call<Resource<ResDetailAkun>>, t: Throwable) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
+
+    fun reqOrder(
+        idUser: Int,
+        idMerchant: Int,
+        namaCucian: String,
+        berat: Int,
+        amount: Int,
+        fee: Int
+    ): LiveData<Resource<ResOrder>> {
+        val liveData = MutableLiveData<Resource<ResOrder>>()
+
+        auth.reqOrder(ReqOrder(idUser, idMerchant, namaCucian, berat, amount, fee))
+            .enqueue(object : Callback<Resource<ResOrder>> {
+                override fun onResponse(
+                    call: Call<Resource<ResOrder>>,
+                    response: Response<Resource<ResOrder>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<Resource<ResOrder>>, t: Throwable) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
+
+    fun getStore(nearest: Boolean? = false, lat: String? = "", long: String? = ""): LiveData<Resource<List<ResStore>>> {
+        val liveData = MutableLiveData<Resource<List<ResStore>>>()
+
+        auth.getStore(ReqStore(nearest, lat, long))
+            .enqueue(object : Callback<Resource<List<ResStore>>> {
+                override fun onResponse(
+                    call: Call<Resource<List<ResStore>>>,
+                    response: Response<Resource<List<ResStore>>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<Resource<List<ResStore>>>, t: Throwable) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
         return liveData
     }
 }

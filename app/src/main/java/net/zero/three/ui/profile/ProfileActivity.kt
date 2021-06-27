@@ -58,7 +58,7 @@ class ProfileActivity : AppCompatActivity() {
             LoadingDialog.close(supportFragmentManager)
             when (it?.status) {
                 true -> {
-                    it.data?.get(0)?.let {
+                    it.data?.let {
                         vNama.text = it.name
                         vEmail.text = it.email
                         vAddress.text = it.address

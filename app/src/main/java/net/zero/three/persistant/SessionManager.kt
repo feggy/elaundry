@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import net.zero.three.App
-import net.zero.three.constants.SharedPrefrenceConstant
 import net.zero.three.constants.SharedPrefrenceConstant.Companion.SHARED_PREF_NAME
 
 class SessionManager(val context: Context) {

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/page_background"
+    android:orientation="vertical"
     tools:context=".ui.order.OrderActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -31,11 +31,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/bg_rounded_half_top"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        android:layout_marginTop="20dp">
+        app:layout_constraintTop_toBottomOf="@id/header">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -381,8 +381,10 @@
                             android:layout_marginRight="10dp"
                             android:layout_weight="1"
                             android:background="@drawable/bg_rounded_border_grey"
+                            android:editable="false"
+                            android:focusable="false"
                             android:fontFamily="@font/montserrat_regular"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:textAlignment="center"
@@ -421,6 +423,93 @@
                     android:padding="10dp"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Total Biaya"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/vTotalAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:singleLine="true"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/grey"
+                        android:textSize="11sp"
+                        tools:text="Rp.0" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Biaya Layanan"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/vBiayaLayanan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:singleLine="true"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/grey"
+                        android:textSize="11sp"
+                        tools:text="Rp.0" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Total Biaya Akhir"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/vGrandTotal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:singleLine="true"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/grey"
+                        android:textSize="11sp"
+                        tools:text="Rp.0" />
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btnOrder"

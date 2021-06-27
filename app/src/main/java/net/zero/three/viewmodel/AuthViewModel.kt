@@ -23,8 +23,33 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         alamat: String,
         email: String,
         lat: String,
-        lng: String
-    ) = authRepository.register(nama, nohp, password, alamat, email, lat, lng)
+        lng: String,
+        level: String,
+        imageStore: String,
+        storeName: String
+    ) = authRepository.register(
+        nama,
+        nohp,
+        password,
+        alamat,
+        email,
+        lat,
+        lng,
+        level,
+        imageStore,
+        storeName
+    )
 
     fun getDetailAkun() = authRepository.getDetailAkun()
+
+    fun reqOrder(
+        idUser: Int,
+        idMerchant: Int,
+        namaCucian: String,
+        berat: Int,
+        amount: Int,
+        fee: Int
+    ) = authRepository.reqOrder(idUser, idMerchant, namaCucian, berat, amount, fee)
+
+    fun getStore(nearest: Boolean? = false, lat: String? = "", long: String? = "") = authRepository.getStore(nearest, lat, long)
 }

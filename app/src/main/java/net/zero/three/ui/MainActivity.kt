@@ -16,13 +16,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.SphericalUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import net.zero.three.R
+import net.zero.three.api.payload.response.ResStore
+import net.zero.three.dialog.AppAlertDialog
 import net.zero.three.dialog.ConfirmationDialog
 import net.zero.three.dialog.LoadingDialog
+import net.zero.three.distanceInKm
+import net.zero.three.getDataDistance
+import net.zero.three.persistant.SessionManager
+import net.zero.three.ui.login.LoginActivity
 import net.zero.three.ui.order.OrderActivity
 import net.zero.three.ui.profile.ProfileActivity
 import net.zero.three.ui.riwayat.RiwayatActivity
+import net.zero.three.ui.splash.SplashActivity
 import net.zero.three.ui.store.StoreActivity
 import net.zero.three.viewmodel.AuthViewModel
 
@@ -38,42 +47,11 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var _vm: AuthViewModel
 
-    var myLat = ""
-    var myLong = ""
+    var myLat: String = ""
+    var myLong: String = ""
 
     lateinit var adapterLaundryDistance: LaundryDistanceAdapter
-    var dataLaundryDistance = ArrayList<LaundryDistance>()
-
-    val data = arrayListOf(
-        LaundryDistance(
-            "Hidup Baru Coin",
-            0.0,
-            "https://cutt.ly/pmedFOs",
-            "-6.260849",
-            "106.794295"
-        ),
-        LaundryDistance(
-            "Fatmawati Laundry Amanah",
-            0.0,
-            "https://cutt.ly/qmedLd7",
-            "-6.260457",
-            "106.793307"
-        ),
-        LaundryDistance(
-            "Professional Jakarta Laundry",
-            0.0,
-            "https://cutt.ly/MmedVmM",
-            "-6.259833",
-            "106.794404"
-        ),
-        LaundryDistance(
-            "Speed Queen Laundry",
-            0.0,
-            "https://cutt.ly/ImedME5",
-            "-6.260165",
-            "106.796891"
-        )
-    )
+    var dataLaundryDistance: ArrayList<ResStore> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +71,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
+        adapterLaundryDistance = LaundryDistanceAdapter(dataLaundryDistance) {
+            ConfirmationDialog.show(
+                supportFragmentManager,
+                "Pesan Sekarang",
+                "Ingin melakukan pemesanan sekarang atau butuh bantuan navigasi ke lokasi laundry?",
+                "Pesan Sekarang",
+                "Navigasi",
+                callbackPositive = {
+                    OrderActivity.show(this)
+                }, callbackNegative = {
+                    val i = Intent(Intent.ACTION_VIEW)
+                    i.data =
+                        Uri.parse("http://maps.google.com/maps?saddr=$myLat,$myLong&daddr=${it.latitude},${it.longitude}")
+                    startActivity(i)
+                },
+                close_button = true
+            )
+        }
+        vRecyclerDistance.layoutManager =
+            LinearLayoutManager(applicationContext, RecyclerView.HORIZONTAL, false)
+        vRecyclerDistance.adapter = adapterLaundryDistance
+
         getDetailAkun()
 
     }
@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             LoadingDialog.close(supportFragmentManager)
             when (it?.status) {
                 true -> {
-                    it.data?.get(0)?.let {
+                    it.data?.let {
                         Glide.with(applicationContext)
                             .load(it.profile_photo_url)
                             .placeholder(R.drawable.avatar)
@@ -144,31 +144,58 @@ class MainActivity : AppCompatActivity() {
                         myLat = it.latitude
                         myLong = it.longitude
 
-                        getDataDistance()
+                        getStore(myLat, myLong)
+                    }
+                }
+                false -> {
+                    if (it.code.toString() == "501") {
+                        AppAlertDialog.show(
+                            supportFragmentManager,
+                            "Oops",
+                            "Sesi anda berakhir, silahkan login kembali",
+                            true,
+                            callbackPositive = {
+                                SessionManager.instance.nohp = ""
+                                SplashActivity.show(this)
+                            }
+                        )
+                    }
+                }
+            }
+        })
+    }
 
-                        dataLaundryDistance.sortedByDescending { it.distance }
+    private fun getStore(lat: String, long: String) {
+        _vm.getStore(true, lat, long).observe(this, {
+            when (it?.status) {
+                true -> {
+                    it.data?.let {
+                        it.forEach {
+                            val distance = SphericalUtil.computeDistanceBetween(
+                                LatLng(
+                                    lat.toDouble(),
+                                    long.toDouble()
+                                ), LatLng(it.latitude.toDouble(), it.longitude.toDouble())
+                            ).distanceInKm()
 
-                        adapterLaundryDistance = LaundryDistanceAdapter(dataLaundryDistance) {
-                            ConfirmationDialog.show(
-                                supportFragmentManager,
-                                "Pesan Sekarang",
-                                "Ingin melakukan pemesanan sekarang atau butuh bantuan navigasi ke lokasi laundry?",
-                                "Pesan Sekarang",
-                                "Navigasi",
-                                callbackPositive = {
-                                    OrderActivity.show(this)
-                                }, callbackNegative = {
-                                    val i = Intent(Intent.ACTION_VIEW)
-                                    i.data =
-                                        Uri.parse("http://maps.google.com/maps?saddr=$myLat,$myLong&daddr=${it.lat},${it.long}")
-                                    startActivity(i)
-                                },
-                                close_button = true
+                            dataLaundryDistance.add(
+                                ResStore(
+                                    it.id,
+                                    it.store_name,
+                                    it.address,
+                                    it.latitude,
+                                    it.longitude,
+                                    it.image_store,
+                                    it.distance.toDouble().distanceInKm().toString(),
+                                    it.profile_photo_url
+                                )
                             )
                         }
-                        vRecyclerDistance.layoutManager =
-                            LinearLayoutManager(applicationContext, RecyclerView.HORIZONTAL, false)
-                        vRecyclerDistance.adapter = adapterLaundryDistance
+//                        dataLaundryDistance.sortedByDescending { it.distance.toDouble() }
+//                        val result = dataLaundryDistance.sortedBy { it.distance.toDouble() }
+//                        dataLaundryDistance.clear()
+//                        dataLaundryDistance.addAll(result)
+                        adapterLaundryDistance.notifyDataSetChanged()
                     }
                 }
                 false -> {
@@ -178,30 +205,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun getDataDistance() {
-        data.forEach {
-            val loc1 = Location("")
-            loc1.latitude = myLat.toDouble()
-            loc1.longitude = myLong.toDouble()
-
-            val loc2 = Location("")
-            loc2.latitude = it.lat.toDouble()
-            loc2.longitude = it.long.toDouble()
-
-            val distanceInMeters = loc1.distanceTo(loc2)
-
-            val distanceInKm = distanceInMeters * 0.001
-            val number3digits: Double = Math.round(distanceInKm * 1000.0) / 1000.0
-            val number2digits: Double = Math.round(number3digits * 100.0) / 100.0
-            val solution: Double = Math.round(number2digits * 10.0) / 10.0
-
-            dataLaundryDistance.add(LaundryDistance(it.nama, solution, it.image, it.lat, it.long))
-        }
-    }
-
     class LaundryDistanceAdapter(
-        val data: ArrayList<LaundryDistance>,
-        val callback: (LaundryDistance) -> Unit
+        val data: ArrayList<ResStore>,
+        val callback: (ResStore) -> Unit
     ) : RecyclerView.Adapter<LaundryDistanceAdapter.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val inflater = LayoutInflater.from(parent.context)
@@ -222,8 +228,8 @@ class MainActivity : AppCompatActivity() {
             val vNamaStore: TextView = itemView.findViewById(R.id.vNamaStore)
             val vDistance: TextView = itemView.findViewById(R.id.vDistance)
 
-            fun bind(item: LaundryDistance, callback: (LaundryDistance) -> Unit) {
-                vNamaStore.text = item.nama
+            fun bind(item: ResStore, callback: (ResStore) -> Unit) {
+                vNamaStore.text = item.store_name
                 vDistance.text = "${item.distance} km"
 
                 val circularProgressDrawable = CircularProgressDrawable(itemView.context)
@@ -232,7 +238,7 @@ class MainActivity : AppCompatActivity() {
                 circularProgressDrawable.start()
 
                 Glide.with(itemView)
-                    .load(item.image)
+                    .load(item.image_store)
                     .placeholder(circularProgressDrawable)
                     .error(R.drawable.laundry_store)
                     .into(imgStore)
@@ -245,12 +251,4 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-    data class LaundryDistance(
-        val nama: String,
-        var distance: Double,
-        val image: String,
-        val lat: String,
-        val long: String
-    )
 }
