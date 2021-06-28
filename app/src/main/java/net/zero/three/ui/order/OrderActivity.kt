@@ -11,15 +11,9 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.activity_order.vToolbar
-import net.zero.three.R
+import net.zero.three.*
 import net.zero.three.api.payload.response.ResStore
-import net.zero.three.dialog.AppAlertDialog
-import net.zero.three.dialog.ConfirmationDialog
-import net.zero.three.dialog.InputDialog
-import net.zero.three.dialog.LoadingDialog
-import net.zero.three.hideKeyboard
-import net.zero.three.toCurrency
-import net.zero.three.toEditable
+import net.zero.three.dialog.*
 import net.zero.three.ui.MainActivity
 import net.zero.three.viewmodel.AuthViewModel
 import java.text.SimpleDateFormat
@@ -47,11 +41,18 @@ class OrderActivity : AppCompatActivity() {
     var adminFee = 0.0
     var grandTotal = 0.0
 
+    var paymentMethod = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
 
         init()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        window.statusBarColor = resources.getColor(R.color.status_bar_color)
     }
 
     private fun init() {
@@ -84,6 +85,7 @@ class OrderActivity : AppCompatActivity() {
                 vTotalAmount.text = totalAmount.toCurrency("Rp")
                 vBiayaLayanan.text = adminFee.toCurrency("Rp")
                 vGrandTotal.text = grandTotal.toCurrency("Rp")
+                vTotalPembayaran.text = grandTotal.toCurrency("Rp")
             }
         })
 
@@ -108,6 +110,7 @@ class OrderActivity : AppCompatActivity() {
 
         vNamaLaundry.text = resStore.store_name
         vAlamatLaundry.text = resStore.address
+        vNohpLaundry.text = resStore.no_hp
 
     }
 
@@ -152,25 +155,51 @@ class OrderActivity : AppCompatActivity() {
 
         btnOrder.setOnClickListener {
             it.hideKeyboard()
-            ConfirmationDialog.show(
-                supportFragmentManager,
-                "Konfirmasi Pembayaran",
-                "Mau melakukan pembayaran sekarang?",
-                "Bayar",
-                "Nanti",
-                callbackPositive = {
-                    Toast.makeText(
-                        applicationContext,
-                        "Masuk ke halaman payment method",
-                        Toast.LENGTH_LONG
-                    ).show()
-                },
-                callbackNegative = {
+
+            if (validation()) {
+                if (paymentMethod == PaymentMethod.NANTI.name) {
                     order()
-                },
-                close_button = true
-            )
+                } else {
+                    order()
+                }
+            }
         }
+
+        btnPayment.setOnClickListener {
+            PaymentMethodDialog.show(supportFragmentManager) {
+                paymentMethod = it
+                vNamaPayment.setTextColor(resources.getColor(R.color.black))
+                if (paymentMethod == PaymentMethod.NANTI.name) {
+                    vNamaPayment.text = "Bayar Nanti"
+                } else if (paymentMethod == PaymentMethod.BRIVA.name) {
+                    vNamaPayment.text = "BRI VA"
+                } else if (paymentMethod == PaymentMethod.BCAVA.name) {
+                    vNamaPayment.text = "BCA VA"
+                }
+            }
+        }
+    }
+
+    private fun validation(): Boolean {
+        if (beratSekarang == 0.0) {
+            AppAlertDialog.show(
+                supportFragmentManager,
+                "Oops",
+                "Kolom berat pakaian tidak boleh kosong",
+                error = true
+            )
+            return false
+        } else if (paymentMethod.isNullOrEmpty()) {
+            AppAlertDialog.show(
+                supportFragmentManager,
+                "Oops",
+                "Mohon pilih metode pembayaran terlebih dahulu",
+                error = true
+            )
+            return false
+        }
+
+        return true
     }
 
     private fun order() {

@@ -191,7 +191,8 @@ class MainActivity : AppCompatActivity() {
                                     it.longitude,
                                     it.image_store,
                                     it.distance.toDouble().distanceInKm().toString(),
-                                    it.profile_photo_url
+                                    it.profile_photo_url,
+                                    it.no_hp
                                 )
                             )
                         }

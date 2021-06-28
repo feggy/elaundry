@@ -74,7 +74,8 @@ data class ResStore(
     @SerializedName("longitude") val longitude : String,
     @SerializedName("image_store") val image_store : String,
     @SerializedName("distance") val distance : String,
-    @SerializedName("profile_photo_url") val profile_photo_url : String
+    @SerializedName("profile_photo_url") val profile_photo_url : String,
+    @SerializedName("no_hp") val no_hp : String
 ): Serializable
 
 data class ResHistory(

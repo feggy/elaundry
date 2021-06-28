@@ -251,7 +251,7 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
                             AppAlertDialog.show(
                                 supportFragmentManager,
                                 "Oops",
-                                it.message,
+                                "Terjadi kesalahan pada server",
                                 error = true
                             )
                         }

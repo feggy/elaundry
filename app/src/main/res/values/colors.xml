@@ -11,6 +11,8 @@
     <color name="colorPrimary">#043F81</color>
     <color name="colorPrimaryDark">#023A79</color>
 
+    <color name="black_title">#404040</color>
+    <color name="status_bar_color">#B3D6F3F9</color>
 
     <color name="red">#e00029</color>
     <color name="black_transparent">#0D000000</color>

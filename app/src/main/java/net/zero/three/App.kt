@@ -30,9 +30,4 @@ class App : MultiDexApplication(), LifecycleObserver {
         }
         ProcessLifecycleOwner.get().lifecycle.addObserver(this@App)
     }
-
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-        MultiDex.install(this)
-    }
 }

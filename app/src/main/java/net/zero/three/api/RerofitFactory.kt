@@ -18,7 +18,7 @@ object RetrofitFactory {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(makeOkHttpClient())
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(serviceType)
     }
@@ -26,7 +26,7 @@ object RetrofitFactory {
     private fun makeOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(makeLoggingInterceptor())
-            .addInterceptor(checkSessionInterceptor())
+//            .addInterceptor(checkSessionInterceptor())
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("accesskey", Constants.ACCESS_KEY)

@@ -47,6 +47,11 @@ class RiwayatActivity : AppCompatActivity() {
         init()
     }
 
+    override fun onStart() {
+        super.onStart()
+        window.statusBarColor = resources.getColor(R.color.status_bar_color)
+    }
+
     private fun init() {
         initData()
         initUI()
@@ -79,7 +84,7 @@ class RiwayatActivity : AppCompatActivity() {
                     AppAlertDialog.show(
                         supportFragmentManager,
                         "Oops",
-                        "Terjadi kesalahan, coba lagi",
+                        it.message,
                         error = true,
                         callbackPositive = {
                             MainActivity.show(this)

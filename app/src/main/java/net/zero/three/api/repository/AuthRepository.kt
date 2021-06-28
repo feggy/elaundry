@@ -81,6 +81,7 @@ class AuthRepository() {
                     call: Call<Resource<ResRegister>>,
                     response: Response<Resource<ResRegister>>
                 ) {
+                    Timber.e("_RESPONSE ${response.body()}")
                     if (response.isSuccessful) {
                         liveData.value = response.body()
                     } else {

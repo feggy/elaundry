@@ -111,3 +111,29 @@ fun String.convertDate(
 
     return outputText
 }
+
+enum class Status(val id: Int) {
+    REGISTER(0),
+    ACTIVE(1),
+    CANCEL(2)
+}
+
+enum class Payment(val id: Int) {
+    ORDER(0),
+    PAID(3),
+    FAILED(2)
+}
+
+enum class Progress(val id: Int) {
+    ORDER(0),
+    APPROVE(1),
+    PROGRESS(2),
+    FINISH(3),
+    CANCEL(4)
+}
+
+enum class PaymentMethod() {
+    NANTI,
+    BRIVA,
+    BCAVA
+}
