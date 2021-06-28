@@ -56,4 +56,14 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun getStore(nearest: Boolean? = false, lat: String? = "", long: String? = "") = authRepository.getStore(nearest, lat, long)
 
     fun getHistory(status: String) = authRepository.getHistory(status)
+
+    fun reqPayment(
+        payment_method: String,
+        amount: String,
+        fee: String,
+        orderId: String,
+        nama: String,
+        email: String,
+        noHp: String
+    ) = authRepository.reqPayment(payment_method, amount, fee, orderId, nama, email, noHp)
 }

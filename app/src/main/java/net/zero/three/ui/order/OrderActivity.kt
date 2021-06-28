@@ -12,12 +12,17 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.activity_order.vToolbar
 import net.zero.three.*
+import net.zero.three.api.payload.Resource
+import net.zero.three.api.payload.response.ResDetailAkun
+import net.zero.three.api.payload.response.ResOrder
+import net.zero.three.api.payload.response.ResPayment
 import net.zero.three.api.payload.response.ResStore
 import net.zero.three.dialog.*
 import net.zero.three.ui.MainActivity
 import net.zero.three.viewmodel.AuthViewModel
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class OrderActivity : AppCompatActivity() {
 
@@ -40,8 +45,14 @@ class OrderActivity : AppCompatActivity() {
     var totalAmount = 0.0
     var adminFee = 0.0
     var grandTotal = 0.0
+    var amountSatuan = 7000
 
     var paymentMethod = ""
+    var orderId = ""
+
+    var resDetailAkun: ResDetailAkun? = null
+    var resPayment: ResPayment? = null
+    var resOrder: ResOrder? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +88,7 @@ class OrderActivity : AppCompatActivity() {
                 if (beratSekarang < 0) {
                     beratSekarang = 0.0
                 }
-                totalAmount = beratSekarang * 7000
+                totalAmount = beratSekarang * amountSatuan
                 adminFee = totalAmount * 0.01
                 grandTotal = totalAmount + adminFee
 
@@ -95,6 +106,7 @@ class OrderActivity : AppCompatActivity() {
             when (it?.status) {
                 true -> {
                     it.data?.let {
+                        resDetailAkun = it
                         idUser = it.id
                         vNama.text = it.name
                         vNohp.text = it.no_hp
@@ -157,11 +169,7 @@ class OrderActivity : AppCompatActivity() {
             it.hideKeyboard()
 
             if (validation()) {
-                if (paymentMethod == PaymentMethod.NANTI.name) {
-                    order()
-                } else {
-                    order()
-                }
+                order()
             }
         }
 
@@ -197,9 +205,60 @@ class OrderActivity : AppCompatActivity() {
                 error = true
             )
             return false
+        } else if (beratSekarang < 1.5) {
+            AppAlertDialog.show(
+                supportFragmentManager,
+                "Oops",
+                "Minimal laundry 1.5kg",
+                error = true
+            )
+            return false
         }
 
         return true
+    }
+
+    private fun pay() {
+        LoadingDialog.show(supportFragmentManager)
+        _vm.reqPayment(
+            paymentMethod,
+            totalAmount.toInt().toString(),
+            adminFee.toInt().toString(),
+            orderId,
+            vNama.text.toString(),
+            vEmail.text.toString(),
+            vNohp.text.toString()
+        ).observe(this, {
+            LoadingDialog.close(supportFragmentManager)
+            when (it?.status) {
+                true -> {
+                    it.data?.let {
+                        resPayment = it
+                    }
+                    AppAlertDialog.show(
+                        supportFragmentManager,
+                        "Sukses",
+                        "Berhasil membuat pesanan, mohon tunggu hingga pesanan Anda disetujui oleh pihak laundry",
+                        callbackPositive = {
+                            DetailOrderDialog.show(
+                                supportFragmentManager,
+                                resPayment, resOrder, resStore, resDetailAkun
+                            ) {
+                                MainActivity.show(this)
+                            }
+                        }
+                    )
+                }
+                false -> {
+                    AppAlertDialog.show(
+                        supportFragmentManager,
+                        "Oops",
+                        it.message,
+                        error = true
+                    )
+                }
+            }
+        })
     }
 
     private fun order() {
@@ -213,22 +272,33 @@ class OrderActivity : AppCompatActivity() {
             idMerchant,
             namaCucian,
             beratSekarang.toString(),
-            grandTotal.toString(),
-            totalAmount.toString(),
-            adminFee.toString(),
+            totalAmount.toInt().toString(),
+            amountSatuan.toString(),
+            adminFee.toInt().toString(),
             vCatatan.text.toString()
         ).observe(this, {
             LoadingDialog.close(supportFragmentManager)
             when (it?.status) {
                 true -> {
-                    AppAlertDialog.show(
-                        supportFragmentManager,
-                        "Sukses",
-                        "Berhasil membuat pesanan, mohon tunggu hingga pesanan Anda disetujui oleh pihak laundry",
-                        callbackPositive = {
-                            MainActivity.show(this)
+                    it.data?.let {
+                        resOrder = it
+                    }
+                    if (paymentMethod == PaymentMethod.NANTI.name) {
+                        AppAlertDialog.show(
+                            supportFragmentManager,
+                            "Sukses",
+                            "Berhasil membuat pesanan, mohon tunggu hingga pesanan Anda disetujui oleh pihak laundry",
+                            callbackPositive = {
+                                MainActivity.show(this)
+                            }
+                        )
+                    } else {
+                        it.data?.let {
+                            orderId = it.id
                         }
-                    )
+                        pay()
+                    }
+
                 }
                 false -> {
                     AppAlertDialog.show(

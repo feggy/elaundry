@@ -29,4 +29,7 @@ interface AuthInterface {
 
     @POST("laundry/history/transaksi")
     fun getHistory(@Body reqHistory: ReqHistory): Call<Resource<List<ResHistory>>>
+
+    @POST("laundry/payment")
+    fun reqPayment(@Body reqPayment: ReqPayment) : Call<Resource<ResPayment>>
 }

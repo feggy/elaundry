@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -73,6 +74,35 @@ class ProfileActivity : AppCompatActivity() {
                             .placeholder(R.drawable.avatar)
                             .error(R.drawable.avatar)
                             .into(vAvatar)
+
+                        val url = "https://elaundry.masuk.id"
+
+                        Glide.with(applicationContext)
+                            .load(url+it.image_store)
+                            .error(R.drawable.ic_close)
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    return false
+                                }
+
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    imgToko.scaleType = ImageView.ScaleType.CENTER_CROP
+                                    return false
+                                }
+
+                            })
+                            .into(imgToko)
 
                         getImageAddress()
                     }

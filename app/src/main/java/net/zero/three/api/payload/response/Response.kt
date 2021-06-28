@@ -60,7 +60,7 @@ data class ResOrder(
     @SerializedName("id_user") val id_user: String,
     @SerializedName("nama_cucian") val  nama_cucian: String,
     @SerializedName("berat") val  berat: String,
-    @SerializedName("amount_satuan") val  fee: String,
+    @SerializedName("amount_satuan") val  amount_satuan: String,
     @SerializedName("id") val  id: String,
     @SerializedName("created_at") val  created_at: String,
     @SerializedName("updated_at") val  updated_at: String
@@ -94,4 +94,18 @@ data class ResHistory(
     @SerializedName("fee") val fee : String,
     @SerializedName("catatan") val catatan : String,
     @SerializedName("store_name") val store_name : String
+)
+
+data class ResPayment(
+    @SerializedName("id_order") val id_order : String,
+    @SerializedName("id_invoice") val id_invoice : String,
+    @SerializedName("amount") val amount : String,
+    @SerializedName("payment_method") val payment_method : String,
+    @SerializedName("status") val status : String,
+    @SerializedName("expired_time") val expired_time : String,
+    @SerializedName("created_at") val created_at : String,
+    @SerializedName("updated_at") val updated_at : String,
+    @SerializedName("reference") val reference : String,
+    @SerializedName("pay_code") val pay_code : String,
+    @SerializedName("id") val id : String
 )

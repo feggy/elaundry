@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import net.zero.three.R
+import net.zero.three.Status
 import net.zero.three.api.payload.response.ResStore
 import net.zero.three.dialog.AppAlertDialog
 import net.zero.three.dialog.ConfirmationDialog
@@ -144,6 +145,10 @@ class MainActivity : AppCompatActivity() {
 
                         vNama.text = it.name
                         vLevel.text = it.level
+
+                        if (it.active == Status.REGISTER.id.toString() && it.level == "Merchant") {
+                            btnUpgrade.visibility = View.VISIBLE
+                        }
 
                         myLat = it.latitude
                         myLong = it.longitude

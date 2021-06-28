@@ -11,7 +11,9 @@
         android:id="@+id/vToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/back_icon_grey" />
+        android:background="@color/transparent"
+        android:elevation="1dp"
+        app:navigationIcon="@drawable/ic_back_icon" />
 
     <ImageView
         android:id="@+id/imgToko"

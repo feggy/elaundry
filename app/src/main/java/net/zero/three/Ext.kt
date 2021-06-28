@@ -1,5 +1,6 @@
 package net.zero.three
 
+import android.R.attr
 import android.content.Context
 import android.location.Location
 import android.text.Editable
@@ -10,6 +11,16 @@ import java.io.InputStreamReader
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import android.R.attr.label
+
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+
+import androidx.core.content.ContextCompat.getSystemService
+
 
 fun View.hideKeyboard(): Boolean {
     try {
@@ -54,7 +65,8 @@ fun Double.toCurrency(code: String): String {
     var run = ""
     if (this < 0.0) {
         val harga = this.toString().replace("-", "").toDouble()
-        run = StringBuilder("-" + code + "" + String.format("%,.0f", harga)).toString().replace(",", ".")
+        run = StringBuilder("-" + code + "" + String.format("%,.0f", harga)).toString()
+            .replace(",", ".")
     } else {
         run = StringBuilder(code + "" + String.format("%,.0f", this)).toString().replace(",", ".")
     }
@@ -62,7 +74,7 @@ fun Double.toCurrency(code: String): String {
     return run
 }
 
-fun Double.distanceInKm() : Double {
+fun Double.distanceInKm(): Double {
 //    val distanceInKm = this * 0.001
     val number3digits: Double = Math.round(this * 1000.0) / 1000.0
     val number2digits: Double = Math.round(number3digits * 100.0) / 100.0
@@ -110,6 +122,14 @@ fun String.convertDate(
     }
 
     return outputText
+}
+
+fun copyClipBoard(context: Context, text: String) {
+    val clipboard: ClipboardManager? =
+        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+    val clip = ClipData.newPlainText("Copied text", text)
+    clipboard?.setPrimaryClip(clip)
+    Toast.makeText(context, "Copied text", Toast.LENGTH_SHORT).show()
 }
 
 enum class Status(val id: Int) {

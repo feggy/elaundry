@@ -48,6 +48,11 @@ class StoreActivity : AppCompatActivity() {
         
         init()
     }
+
+    override fun onStart() {
+        super.onStart()
+        window.statusBarColor = resources.getColor(R.color.status_bar_color)
+    }
     
     private fun init() {
         initData()

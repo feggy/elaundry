@@ -44,3 +44,13 @@ data class ReqHistory(
     @SerializedName("noHp") var noHp: String?,
     @SerializedName("status") var status: String
 )
+
+data class ReqPayment(
+    @SerializedName("payment_method") val payment_method : String,
+    @SerializedName("amount") val amount : String,
+    @SerializedName("fee") val fee : String,
+    @SerializedName("orderId") val orderId : String,
+    @SerializedName("nama") val nama : String,
+    @SerializedName("email") val email : String,
+    @SerializedName("noHp") val noHp : String
+)

@@ -237,4 +237,40 @@ class AuthRepository() {
             })
         return liveData
     }
+
+    fun reqPayment(
+        payment_method: String,
+        amount: String,
+        fee: String,
+        orderId: String,
+        nama: String,
+        email: String,
+        noHp: String
+    ): LiveData<Resource<ResPayment>> {
+        val liveData = MutableLiveData<Resource<ResPayment>>()
+
+        auth.reqPayment(ReqPayment(payment_method, amount, fee, orderId, nama, email, noHp))
+            .enqueue(object : Callback<Resource<ResPayment>> {
+                override fun onResponse(
+                    call: Call<Resource<ResPayment>>,
+                    response: Response<Resource<ResPayment>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<Resource<ResPayment>>, t: Throwable) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
 }

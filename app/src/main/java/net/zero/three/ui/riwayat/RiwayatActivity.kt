@@ -14,13 +14,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_riwayat.*
-import net.zero.three.R
+import net.zero.three.*
 import net.zero.three.api.payload.response.ResHistory
 import net.zero.three.constants.Constants
-import net.zero.three.convertDate
 import net.zero.three.dialog.AppAlertDialog
 import net.zero.three.dialog.LoadingDialog
-import net.zero.three.toCurrency
 import net.zero.three.ui.MainActivity
 import net.zero.three.viewmodel.AuthViewModel
 import java.text.SimpleDateFormat
@@ -77,6 +75,9 @@ class RiwayatActivity : AppCompatActivity() {
                 true -> {
                     it.data?.let {
                         dataHistory.addAll(it)
+                        val dataSort = dataHistory.sortedByDescending { it.created_at }
+                        dataHistory.clear()
+                        dataHistory.addAll(dataSort)
                         adapter.notifyDataSetChanged()
                     }
                 }
@@ -138,12 +139,27 @@ class RiwayatActivity : AppCompatActivity() {
                 val date = item.created_at.convertDate("yyyy-mm-dd", "dd-mm-yyyy", Locale("ID"))
                 vTglPesanan.text = "Tanggal pesanan: $date"
 
-                if (item.status_pembayaran == Constants.PAID.toString()) {
+                if (item.status_pengerjaan == Progress.APPROVE.name) {
+                    vStatus.text = "Disetujui"
+                } else if (item.status_pengerjaan == Progress.CANCEL.name) {
+                    vStatus.text = "Dibatalkan"
+                } else if (item.status_pengerjaan == Progress.FINISH.name) {
+                    vStatus.text = "Selesai"
+                } else {
+                    vStatus.text = "Menunggu"
+                }
+
+                if (item.status_pembayaran == Payment.PAID.id.toString()) {
                     vStatusPembayaran.text = "Lunas"
                     imgStatus.setImageResource(R.drawable.paid)
+                    btnBayar.visibility = View.INVISIBLE
                 } else {
                     vStatusPembayaran.text = "Belum dibayar"
                     imgStatus.setImageResource(R.drawable.unpaid)
+                }
+
+                btnBayar.setOnClickListener {
+                    callback.invoke(item)
                 }
             }
         }
