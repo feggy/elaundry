@@ -116,6 +116,10 @@ class WithdrawalActivity : AppCompatActivity() {
     }
 
     private fun eventUI() {
+        vToolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
         btnNext.setOnClickListener {
             jumlah = vJumlah.text.toString().replace(".", "")
             norek = vNoRek.text.toString()

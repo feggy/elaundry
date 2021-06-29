@@ -19,6 +19,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.riwayat.RiwayatAntrianActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.withdrawal.WithdrawalHistoryActivity"
             android:exported="true" />
         <activity

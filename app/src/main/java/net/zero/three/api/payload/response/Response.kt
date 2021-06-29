@@ -99,23 +99,6 @@ data class ResHistory(
     @SerializedName("store_name") var store_name : String
 )
 
-data class ResAntrian(
-    @SerializedName("id") var id : String,
-    @SerializedName("id_user") var id_user : String,
-    @SerializedName("id_merchant") var id_merchant : String,
-    @SerializedName("nama_cucian") var nama_cucian : String,
-    @SerializedName("berat") var berat : String,
-    @SerializedName("amount_satuan") var amount_satuan : String,
-    @SerializedName("amount") var amount : String,
-    @SerializedName("status") var status : String,
-    @SerializedName("status_pembayaran") var status_pembayaran : String,
-    @SerializedName("status_pengerjaan") var status_pengerjaan : String,
-    @SerializedName("created_at") var created_at : String,
-    @SerializedName("updated_at") var updated_at : String,
-    @SerializedName("fee") var fee : String,
-    @SerializedName("catatan") var catatan : String
-)
-
 data class Antrian(
     var orderId: String,
     var id_merchant: String,
@@ -123,7 +106,7 @@ data class Antrian(
     var no_hp: String,
     var status_pengerjaan: String,
     var created_at: String
-)
+): Serializable
 
 data class ResPayment(
     @SerializedName("id_order") var id_order : String,

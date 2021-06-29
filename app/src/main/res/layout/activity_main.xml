@@ -468,9 +468,8 @@
 
                         <LinearLayout
                             android:id="@+id/btnSeeAllAntrian"
-                            android:layout_width="85dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="18dp"
-                            android:background="@drawable/bg_capsule"
                             android:gravity="center"
                             android:layout_gravity="center"
                             android:orientation="horizontal">

@@ -79,10 +79,16 @@ class SettingsActivity : AppCompatActivity() {
 
         btnLogout.setOnClickListener {
             SessionManager.instance.nohp = ""
+            SessionManager.instance.level = ""
+            SessionManager.instance.saldo = ""
+            SessionManager.instance.hargaPerKg = ""
+            SessionManager.instance.userId = ""
+            SessionManager.instance.biayaAdmin = ""
+
             LoadingDialog.show(supportFragmentManager)
             Handler().postDelayed({
                 SplashActivity.show(this)
-            },500)
+            },1000)
         }
 
         vPerkg.setOnClickListener {

@@ -33,12 +33,14 @@ import net.zero.three.ui.login.LoginActivity
 import net.zero.three.ui.order.OrderActivity
 import net.zero.three.ui.profile.ProfileActivity
 import net.zero.three.ui.riwayat.RiwayatActivity
+import net.zero.three.ui.riwayat.RiwayatAntrianActivity
 import net.zero.three.ui.settings.SettingsActivity
 import net.zero.three.ui.splash.SplashActivity
 import net.zero.three.ui.store.StoreActivity
 import net.zero.three.ui.withdrawal.WithdrawalActivity
 import net.zero.three.ui.withdrawal.WithdrawalHistoryActivity
 import net.zero.three.viewmodel.AuthViewModel
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -108,9 +110,6 @@ class MainActivity : AppCompatActivity() {
         vRecyclerDistance.adapter = adapterLaundryDistance
 
         getDetailAkun()
-
-        loadAntrian()
-
     }
 
     private fun eventUI() {
@@ -155,6 +154,10 @@ class MainActivity : AppCompatActivity() {
         btnHistoryPenarikan.setOnClickListener {
             WithdrawalHistoryActivity.show(this)
         }
+
+        btnSeeAllAntrian.setOnClickListener {
+            RiwayatAntrianActivity.show(this)
+        }
     }
 
     private fun getDetailAkun() {
@@ -183,8 +186,8 @@ class MainActivity : AppCompatActivity() {
                             if (it.active == Status.REGISTER.id.toString()) {
                                 btnUpgrade.visibility = View.VISIBLE
                             }
-                        } else if (it.level == "Pelanggan") {
-
+                        } else {
+                            btnSeeAllAntrian.visibility = View.GONE
                         }
 
                         myLat = it.latitude
@@ -197,6 +200,7 @@ class MainActivity : AppCompatActivity() {
                         SessionManager.instance.saldo = it.saldo
 
                         getStore(myLat, myLong)
+                        loadAntrian()
                     }
                 }
                 false -> {
@@ -272,13 +276,53 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
         }
 
+        Timber.e("_ ${SessionManager.instance.level}")
+
         if (SessionManager.instance.level == "Merchant") {
             getDataAntrianMerchant()
+        } else {
+            getDataAntrianPelanggan()
         }
     }
 
+    private fun getDataAntrianPelanggan() {
+        dataAntrian.clear()
+        LoadingDialog.show(supportFragmentManager)
+        _vm.getHistory("").observe(this, {
+            LoadingDialog.close(supportFragmentManager)
+            when (it?.status) {
+                true -> {
+                    it.data?.let {
+                        Timber.e("_Reshistory $it")
+                        it.forEach {
+                            if (it.status_pengerjaan != Progress.CANCEL.id.toString() || it.status_pengerjaan != Progress.FINISH.id.toString()) {
+                                dataAntrian.add(
+                                    Antrian(
+                                        it.id,
+                                        it.id_merchant,
+                                        it.store_name,
+                                        it.status_pembayaran,
+                                        it.status_pengerjaan,
+                                        it.created_at
+                                    )
+                                )
+                            }
+                        }
+                        val sort = dataAntrian.sortedByDescending { it.created_at }
+                        dataAntrian.clear()
+                        dataAntrian.addAll(sort)
+                        adapterAntrian.notifyDataSetChanged()
+                    }
+                }
+            }
+        })
+    }
+
     private fun getDataAntrianMerchant() {
+        dataAntrian.clear()
+        LoadingDialog.show(supportFragmentManager)
         _vm.getTransactionCustomer(SessionManager.instance.userId!!).observe(this, {
+            LoadingDialog.close(supportFragmentManager)
             when (it?.status) {
                 true -> {
                     it.data?.let {
@@ -287,13 +331,20 @@ class MainActivity : AppCompatActivity() {
                         } else {
                             it.forEach {
                                 dataAntrian.add(
-                                    Antrian(it.id_order, SessionManager.instance.userId!!, it.nama_pelanggan, it.hp_pelanggan, it.status, it.created_at)
+                                    Antrian(
+                                        it.id_order,
+                                        SessionManager.instance.userId!!,
+                                        it.nama_pelanggan,
+                                        it.hp_pelanggan,
+                                        it.status,
+                                        it.created_at
+                                    )
                                 )
-                                var sort = dataAntrian.sortedByDescending { it.created_at }
-                                dataAntrian.clear()
-                                dataAntrian.addAll(sort)
-                                adapterAntrian.notifyDataSetChanged()
                             }
+                            val sort = dataAntrian.sortedByDescending { it.created_at }
+                            dataAntrian.clear()
+                            dataAntrian.addAll(sort)
+                            adapterAntrian.notifyDataSetChanged()
                         }
                     }
                 }
@@ -378,16 +429,36 @@ class MainActivity : AppCompatActivity() {
                 vNama.text = item.nama
                 vNohp.text = item.no_hp
 
-                if (item.status_pengerjaan == Progress.APPROVE.name) {
-                    vStatus.text = "Disetujui"
-                } else if (item.status_pengerjaan == Progress.CANCEL.name) {
-                    vStatus.text = "Dibatalkan"
-                } else if (item.status_pengerjaan == Progress.FINISH.name) {
-                    vStatus.text = "Selesai"
-                } else if (item.status_pengerjaan == Progress.PROGRESS.name) {
-                    vStatus.text = "Diproses"
-                } else {
-                    vStatus.text = "Menunggu"
+                when (item.status_pengerjaan) {
+                    Progress.APPROVE.id.toString() -> {
+                        vStatus.text = "Disetujui"
+                    }
+                    Progress.CANCEL.id.toString() -> {
+                        vStatus.text = "Dibatalkan"
+                    }
+                    Progress.FINISH.id.toString() -> {
+                        vStatus.text = "Selesai"
+                    }
+                    Progress.PROGRESS.id.toString() -> {
+                        vStatus.text = "Diproses"
+                    }
+                    else -> {
+                        vStatus.text = "Menunggu"
+                    }
+                }
+
+                if (SessionManager.instance.level == "Pelanggan") {
+                    when (item.no_hp) {
+                        Payment.PAID.id.toString() -> {
+                            vNohp.text = "Lunas"
+                        }
+                        Payment.FAILED.id.toString() -> {
+                            vNohp.text = "Dibatalkan"
+                        }
+                        else -> {
+                            vNohp.text = "Belum dibayar"
+                        }
+                    }
                 }
 
                 vTgl.text = item.created_at.convertDate("yyyy-MM-dd'T'HH:mm", "dd-MM-yyyy HH:mm")
