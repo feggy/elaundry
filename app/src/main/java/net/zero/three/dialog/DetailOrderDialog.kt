@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.dialog_detail_order.*
 import kotlinx.android.synthetic.main.dialog_detail_order.vAlamat
 import kotlinx.android.synthetic.main.dialog_detail_order.vAlamatLaundry
@@ -22,6 +23,7 @@ import net.zero.three.api.payload.response.ResDetailAkun
 import net.zero.three.api.payload.response.ResOrder
 import net.zero.three.api.payload.response.ResPayment
 import net.zero.three.api.payload.response.ResStore
+import net.zero.three.viewmodel.AuthViewModel
 import java.util.*
 
 class DetailOrderDialog : DialogFragment() {
@@ -29,27 +31,20 @@ class DetailOrderDialog : DialogFragment() {
     companion object {
         fun show(
             fragmentManager: FragmentManager,
-            resPayment: ResPayment? = null,
-            resOrder: ResOrder? = null,
-            resStore: ResStore? = null,
-            resDetailAkun: ResDetailAkun? = null,
+            orderId: String,
+            fromOrder: Boolean? = false,
             callback: () -> Unit
         ) = DetailOrderDialog().apply {
-            this.resPayment = resPayment
-            this.resOrder = resOrder
-            this.resStore = resStore
-            this.resDetailAkun = resDetailAkun
+            this.orderId = orderId
+            this.fromOrder = fromOrder
             this.callback = callback
         }.show(fragmentManager, "")
     }
 
-    var resDetailAkun: ResDetailAkun? = null
-    var resPayment: ResPayment? = null
-    var resOrder: ResOrder? = null
-    var resStore: ResStore? = null
     lateinit var callback: () -> Unit
-
-    var total = 0
+    private var orderId = ""
+    var fromOrder: Boolean? = false
+    private lateinit var _vm: AuthViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,56 +82,16 @@ class DetailOrderDialog : DialogFragment() {
     }
 
     private fun initData() {
-
+        _vm = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
     }
 
     private fun initUI() {
-        resDetailAkun?.let {
-            vNama.text = it.name
-            vNohp.text = it.no_hp
-            vAlamat.text = it.address
-            vEmail.text = it.email
+        if (fromOrder == false) {
+            footer.visibility = View.VISIBLE
+            vieww.visibility = View.VISIBLE
         }
 
-        resStore?.let {
-            vNamaLaundry.text = it.store_name
-            vAlamatLaundry.text = it.address
-            vNohpLaundry.text = it.no_hp
-        }
-
-        resOrder?.let {
-            vBerat.text = "${it.berat} kg"
-            vCatatan.text = ""
-            total = it.amount_satuan.toInt()*it.berat.toDouble().toInt()
-            vTotalAmount.text = total.toDouble().toCurrency("Rp")
-        }
-
-        resPayment?.let {
-            vOrderId.text = it.id_order
-            vInvoiceId.text = it.id_invoice
-            if (it.status == Payment.PAID.id.toString()) {
-                vStatusPembayaran.text = "Lunas"
-                footer.visibility = View.GONE
-                lytKodePembayaran.visibility = View.GONE
-            } else {
-                vStatusPembayaran.text = "Belum dibayar"
-            }
-
-            vTgl.text = it.created_at.convertDate("yyyy-mm-dd", "dd-mm-yyyy", Locale("ID"))
-
-            if (it.payment_method == PaymentMethod.BRIVA.name) {
-                vMetodePembayaran.text ="BRI Virtual Account"
-            } else if (it.payment_method == PaymentMethod.BCAVA.name) {
-                vMetodePembayaran.text = "BCA Virtual Account"
-            } else {
-                vMetodePembayaran.text = "Bayar Nanti"
-                lytKodePembayaran.visibility = View.GONE
-            }
-
-            vKodePembayaran.text = it.pay_code
-            vBiayaLayanan.text = ""
-            vTotalPembayaran.text = it.amount
-        }
+        getDetailOrder()
     }
 
     private fun eventUI() {
@@ -148,6 +103,74 @@ class DetailOrderDialog : DialogFragment() {
             val kodePembayaran = vKodePembayaran.text.toString()
             copyClipBoard(requireContext(), kodePembayaran)
         }
+    }
+
+    private fun getDetailOrder() {
+        LoadingDialog.show(childFragmentManager)
+        _vm.getDetailOrder(orderId).observe(viewLifecycleOwner, {
+            LoadingDialog.close(childFragmentManager)
+            when (it?.status) {
+                true -> {
+                    it.data?.let {
+                        vNama.text = it.nama_pelanggan
+                        vNohp.text = it.hp_pelanggan
+                        vAlamat.text = it.alamat_pelanggan
+                        vEmail.text = it.email_pelanggan
+
+                        vNamaLaundry.text = it.store_name
+                        vAlamatLaundry.text = it.alamat_laundry
+                        vNohpLaundry.text = it.hp_laundry
+
+                        vBerat.text = "${it.berat} kg"
+                        vCatatan.text = it.catatan
+                        vTotalAmount.text = it.sub_total.toDouble().toCurrency("Rp")
+
+                        vOrderId.text = it.id_order
+                        vInvoiceId.text = it.id_invoice
+                        if (it.status == Payment.PAID.id.toString()) {
+                            vStatusPembayaran.text = "Lunas"
+                            footer.visibility = View.GONE
+                            lytKodePembayaran.visibility = View.GONE
+                        } else {
+                            vStatusPembayaran.text = "Belum dibayar"
+                        }
+
+                        vTgl.text =
+                            it.created_at.convertDate("yyyy-mm-dd", "dd-mm-yyyy", Locale("ID"))
+
+                        if (it.payment_method == PaymentMethod.BRIVA.name) {
+                            vMetodePembayaran.text = "BRI Virtual Account"
+                            vStatusPembayaran.text = "Menunggu Pembayaran"
+                        } else if (it.payment_method == PaymentMethod.BCAVA.name) {
+                            vMetodePembayaran.text = "BCA Virtual Account"
+                            vStatusPembayaran.text = "Menunggu Pembayaran"
+                        } else {
+                            vMetodePembayaran.text = "Bayar Nanti"
+                            lytKodePembayaran.visibility = View.GONE
+                        }
+
+                        if (!it.pay_code.isNullOrEmpty()) {
+                            btnOrder.visibility = View.GONE
+                        }
+
+                        vKodePembayaran.text = it.pay_code
+                        vBiayaLayanan.text = it.biaya_layanan
+                        vTotalPembayaran.text = it.total_bayar.toDouble().toCurrency("Rp")
+                    }
+                }
+                false -> {
+                    AppAlertDialog.show(
+                        childFragmentManager,
+                        "Oops",
+                        it.message,
+                        error = true,
+                        callbackPositive = {
+                            dismiss()
+                        }
+                    )
+                }
+            }
+        })
     }
 
     override fun onDismiss(dialog: DialogInterface) {

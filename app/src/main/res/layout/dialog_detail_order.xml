@@ -34,9 +34,9 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
+                android:paddingLeft="15dp"
                 android:paddingTop="20dp"
-                android:paddingRight="10dp"
+                android:paddingRight="15dp"
                 android:paddingBottom="20dp">
 
                 <LinearLayout
@@ -157,9 +157,9 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
+                android:paddingLeft="15dp"
                 android:paddingTop="20dp"
-                android:paddingRight="10dp"
+                android:paddingRight="15dp"
                 android:paddingBottom="20dp">
 
                 <TextView
@@ -183,7 +183,7 @@
                         android:layout_weight="1.5"
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Nama"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey"
                         android:textSize="11sp" />
 
                     <TextView
@@ -194,7 +194,7 @@
                         android:fontFamily="@font/montserrat_regular"
                         android:singleLine="true"
                         android:textAlignment="textEnd"
-                        android:textColor="@color/grey"
+                        android:textColor="@color/black"
                         android:textSize="11sp"
                         tools:text="Zerth Zerothree" />
 
@@ -212,7 +212,7 @@
                         android:layout_weight="1.5"
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Nomor hp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey"
                         android:textSize="11sp" />
 
                     <TextView
@@ -223,7 +223,7 @@
                         android:fontFamily="@font/montserrat_regular"
                         android:singleLine="true"
                         android:textAlignment="textEnd"
-                        android:textColor="@color/grey"
+                        android:textColor="@color/black"
                         android:textSize="11sp"
                         tools:text="08091000100" />
 
@@ -241,7 +241,7 @@
                         android:layout_weight="1.5"
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Email"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey"
                         android:textSize="11sp" />
 
                     <TextView
@@ -252,7 +252,7 @@
                         android:fontFamily="@font/montserrat_regular"
                         android:singleLine="true"
                         android:textAlignment="textEnd"
-                        android:textColor="@color/grey"
+                        android:textColor="@color/black"
                         android:textSize="11sp"
                         tools:text="zerth@zerothree.com" />
 
@@ -269,7 +269,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Alamat"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey"
                         android:textSize="11sp" />
 
                     <TextView
@@ -279,7 +279,7 @@
                         android:layout_marginTop="3dp"
                         android:fontFamily="@font/montserrat_regular"
                         android:justificationMode="inter_word"
-                        android:textColor="@color/grey"
+                        android:textColor="@color/black"
                         android:textSize="11sp"
                         tools:targetApi="o"
                         tools:text="Jl. Raya Indonesia no. 120 Kec. Terindah Kel. Kenanganku, Jakarta Selatan" />
@@ -293,9 +293,9 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
+                android:paddingLeft="15dp"
                 android:paddingTop="20dp"
-                android:paddingRight="10dp"
+                android:paddingRight="15dp"
                 android:paddingBottom="20dp">
 
                 <TextView
@@ -325,7 +325,7 @@
                             android:layout_weight="1.5"
                             android:fontFamily="@font/montserrat_regular"
                             android:text="Nama Laundry"
-                            android:textColor="@color/black"
+                            android:textColor="@color/grey"
                             android:textSize="11sp" />
 
                         <TextView
@@ -336,7 +336,7 @@
                             android:fontFamily="@font/montserrat_regular"
                             android:singleLine="true"
                             android:textAlignment="textEnd"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/black"
                             android:textSize="11sp"
                             tools:text="Hidup Baru Fresh Laundry" />
 
@@ -354,7 +354,7 @@
                             android:layout_weight="1.5"
                             android:fontFamily="@font/montserrat_regular"
                             android:text="Nomor hp"
-                            android:textColor="@color/black"
+                            android:textColor="@color/grey"
                             android:textSize="11sp" />
 
                         <TextView
@@ -365,7 +365,7 @@
                             android:fontFamily="@font/montserrat_regular"
                             android:singleLine="true"
                             android:textAlignment="textEnd"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/black"
                             android:textSize="11sp"
                             tools:text="08091000100" />
 
@@ -382,7 +382,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/montserrat_regular"
                             android:text="Alamat"
-                            android:textColor="@color/black"
+                            android:textColor="@color/grey"
                             android:textSize="11sp" />
 
                         <TextView
@@ -392,7 +392,7 @@
                             android:layout_marginTop="3dp"
                             android:fontFamily="@font/montserrat_regular"
                             android:justificationMode="inter_word"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/black"
                             android:textSize="11sp"
                             tools:targetApi="o"
                             tools:text="Jl. Raya Indonesia no. 120 Kec. Terindah Kel. Kenanganku, Jakarta Selatan" />
@@ -407,9 +407,9 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
+                android:paddingLeft="15dp"
                 android:paddingTop="20dp"
-                android:paddingRight="10dp"
+                android:paddingRight="15dp"
                 android:paddingBottom="20dp">
 
                 <TextView
@@ -433,7 +433,7 @@
                         android:layout_weight="1.5"
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Berat Laundry"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey"
                         android:textSize="11sp" />
 
                     <TextView
@@ -444,7 +444,7 @@
                         android:fontFamily="@font/montserrat_regular"
                         android:singleLine="true"
                         android:textAlignment="textEnd"
-                        android:textColor="@color/grey"
+                        android:textColor="@color/black"
                         android:textSize="11sp"
                         tools:text="1.5 kg" />
 
@@ -461,7 +461,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Catatan"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey"
                         android:textSize="11sp" />
 
                     <TextView
@@ -471,7 +471,7 @@
                         android:layout_marginTop="3dp"
                         android:fontFamily="@font/montserrat_regular"
                         android:justificationMode="inter_word"
-                        android:textColor="@color/grey"
+                        android:textColor="@color/black"
                         android:textSize="11sp"
                         tools:targetApi="o"
                         tools:text="Baju 10, Celana 2" />
@@ -485,9 +485,9 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
+                android:paddingLeft="15dp"
                 android:paddingTop="20dp"
-                android:paddingRight="10dp"
+                android:paddingRight="15dp"
                 android:paddingBottom="20dp">
 
                 <TextView
@@ -517,7 +517,7 @@
                             android:layout_weight="1.5"
                             android:fontFamily="@font/montserrat_regular"
                             android:text="Metode Pembayaran"
-                            android:textColor="@color/black"
+                            android:textColor="@color/grey"
                             android:textSize="12sp" />
 
                         <TextView
@@ -528,7 +528,7 @@
                             android:fontFamily="@font/montserrat_regular"
                             android:singleLine="true"
                             android:textAlignment="textEnd"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/black"
                             android:textSize="11sp"
                             tools:text="BRI Virtual Account" />
 
@@ -546,7 +546,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/montserrat_regular"
                             android:text="Kode Virtual Account"
-                            android:textColor="@color/black"
+                            android:textColor="@color/grey"
                             android:textSize="11sp" />
 
                         <RelativeLayout
@@ -602,7 +602,7 @@
                             android:singleLine="true"
                             android:text="Rp0"
                             android:textAlignment="textEnd"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/black"
                             android:textSize="11sp" />
 
                     </LinearLayout>
@@ -631,7 +631,7 @@
                             android:singleLine="true"
                             android:text="Rp0"
                             android:textAlignment="textEnd"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/black"
                             android:textSize="11sp" />
 
                     </LinearLayout>
@@ -640,31 +640,31 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <RelativeLayout
+    <View
+        android:id="@+id/vieww"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        android:background="@drawable/top_shadow"
+        android:alpha=".5"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <LinearLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <TextView
-            android:id="@+id/btnOrder"
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:background="#42C0FB"
-            android:fontFamily="@font/montserrat_semi_bold"
-            android:gravity="center"
-            android:text="Bayar"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/btnOrder"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
             android:gravity="center_vertical|end"
             android:orientation="vertical">
 
@@ -685,6 +685,17 @@
                 android:textColor="#42C0FB"
                 android:textSize="14sp" />
         </LinearLayout>
-    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/btnOrder"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:background="#42C0FB"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:gravity="center"
+            android:text="Bayar"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

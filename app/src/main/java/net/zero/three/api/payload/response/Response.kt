@@ -107,5 +107,29 @@ data class ResPayment(
     @SerializedName("updated_at") val updated_at : String,
     @SerializedName("reference") val reference : String,
     @SerializedName("pay_code") val pay_code : String,
-    @SerializedName("id") val id : String
+    @SerializedName("id") val id : String,
+    @SerializedName("fee") val fee : String,
+    @SerializedName("total_bayar") val total_bayar : String
+)
+
+data class ResDetailOrder(
+    @SerializedName("id_order") var id_order : String,
+    @SerializedName("id_invoice") var id_invoice : String,
+    @SerializedName("created_at") var created_at : String,
+    @SerializedName("status") var status : String,
+    @SerializedName("nama_pelanggan") var nama_pelanggan : String,
+    @SerializedName("hp_pelanggan") var hp_pelanggan : String,
+    @SerializedName("email_pelanggan") var email_pelanggan : String,
+    @SerializedName("alamat_pelanggan") var alamat_pelanggan : String,
+    @SerializedName("store_name") var store_name : String,
+    @SerializedName("nama_cucian") var nama_cucian : String,
+    @SerializedName("hp_laundry") var hp_laundry : String,
+    @SerializedName("alamat_laundry") var alamat_laundry : String,
+    @SerializedName("berat") var berat : String,
+    @SerializedName("catatan") var catatan : String,
+    @SerializedName("payment_method") var payment_method : String,
+    @SerializedName("pay_code") var pay_code : String,
+    @SerializedName("sub_total") var sub_total : String,
+    @SerializedName("biaya_layanan") var biaya_layanan : String,
+    @SerializedName("total_bayar") var total_bayar : String
 )

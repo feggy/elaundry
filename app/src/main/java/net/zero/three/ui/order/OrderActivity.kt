@@ -50,10 +50,6 @@ class OrderActivity : AppCompatActivity() {
     var paymentMethod = ""
     var orderId = ""
 
-    var resDetailAkun: ResDetailAkun? = null
-    var resPayment: ResPayment? = null
-    var resOrder: ResOrder? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
@@ -106,7 +102,6 @@ class OrderActivity : AppCompatActivity() {
             when (it?.status) {
                 true -> {
                     it.data?.let {
-                        resDetailAkun = it
                         idUser = it.id
                         vNama.text = it.name
                         vNohp.text = it.no_hp
@@ -232,9 +227,6 @@ class OrderActivity : AppCompatActivity() {
             LoadingDialog.close(supportFragmentManager)
             when (it?.status) {
                 true -> {
-                    it.data?.let {
-                        resPayment = it
-                    }
                     AppAlertDialog.show(
                         supportFragmentManager,
                         "Sukses",
@@ -242,7 +234,8 @@ class OrderActivity : AppCompatActivity() {
                         callbackPositive = {
                             DetailOrderDialog.show(
                                 supportFragmentManager,
-                                resPayment, resOrder, resStore, resDetailAkun
+                                orderId,
+                                true
                             ) {
                                 MainActivity.show(this)
                             }
@@ -281,7 +274,7 @@ class OrderActivity : AppCompatActivity() {
             when (it?.status) {
                 true -> {
                     it.data?.let {
-                        resOrder = it
+                        orderId = it.id
                     }
                     if (paymentMethod == PaymentMethod.NANTI.name) {
                         AppAlertDialog.show(
@@ -289,13 +282,12 @@ class OrderActivity : AppCompatActivity() {
                             "Sukses",
                             "Berhasil membuat pesanan, mohon tunggu hingga pesanan Anda disetujui oleh pihak laundry",
                             callbackPositive = {
-                                MainActivity.show(this)
+                                DetailOrderDialog.show(supportFragmentManager, orderId, true) {
+                                    MainActivity.show(this)
+                                }
                             }
                         )
                     } else {
-                        it.data?.let {
-                            orderId = it.id
-                        }
                         pay()
                     }
 

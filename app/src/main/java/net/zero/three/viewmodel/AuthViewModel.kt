@@ -66,4 +66,6 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         email: String,
         noHp: String
     ) = authRepository.reqPayment(payment_method, amount, fee, orderId, nama, email, noHp)
+
+    fun getDetailOrder(orderId: String) = authRepository.getDetailOrder(orderId)
 }

@@ -32,4 +32,7 @@ interface AuthInterface {
 
     @POST("laundry/payment")
     fun reqPayment(@Body reqPayment: ReqPayment) : Call<Resource<ResPayment>>
+
+    @GET("laundry/detail/order/{orderId}")
+    fun getDetailOrder(@Path("orderId") orderId: String?): Call<Resource<ResDetailOrder>>
 }

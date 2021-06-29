@@ -601,6 +601,13 @@
         </androidx.core.widget.NestedScrollView>
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        android:background="@drawable/top_shadow"
+        android:alpha=".5"/>
+
     <RelativeLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"

@@ -273,4 +273,34 @@ class AuthRepository() {
             })
         return liveData
     }
+
+    fun getDetailOrder(
+        orderId: String
+    ): LiveData<Resource<ResDetailOrder>> {
+        val liveData = MutableLiveData<Resource<ResDetailOrder>>()
+
+        auth.getDetailOrder(orderId)
+            .enqueue(object : Callback<Resource<ResDetailOrder>> {
+                override fun onResponse(
+                    call: Call<Resource<ResDetailOrder>>,
+                    response: Response<Resource<ResDetailOrder>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<Resource<ResDetailOrder>>, t: Throwable) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
 }

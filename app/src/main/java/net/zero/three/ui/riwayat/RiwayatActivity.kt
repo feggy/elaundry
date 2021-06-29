@@ -18,6 +18,7 @@ import net.zero.three.*
 import net.zero.three.api.payload.response.ResHistory
 import net.zero.three.constants.Constants
 import net.zero.three.dialog.AppAlertDialog
+import net.zero.three.dialog.DetailOrderDialog
 import net.zero.three.dialog.LoadingDialog
 import net.zero.three.ui.MainActivity
 import net.zero.three.viewmodel.AuthViewModel
@@ -62,7 +63,7 @@ class RiwayatActivity : AppCompatActivity() {
 
     private fun initUI() {
         adapter = HistoryAdapter(dataHistory) {
-
+            DetailOrderDialog.show(supportFragmentManager, it.id) {}
         }
         vRecycler.layoutManager =
             LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
@@ -156,6 +157,10 @@ class RiwayatActivity : AppCompatActivity() {
                 } else {
                     vStatusPembayaran.text = "Belum dibayar"
                     imgStatus.setImageResource(R.drawable.unpaid)
+                }
+
+                itemView.setOnClickListener {
+                    callback.invoke(item)
                 }
 
                 btnBayar.setOnClickListener {

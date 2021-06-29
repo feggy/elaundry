@@ -37,5 +37,9 @@ class InputDialog: DialogFragment() {
             dismiss()
             callback.invoke(vValue.text.toString())
         }
+
+        btnCancel.setOnClickListener {
+            dismiss()
+        }
     }
 }
