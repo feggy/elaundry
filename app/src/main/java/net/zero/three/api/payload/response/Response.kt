@@ -52,7 +52,10 @@ data class ResDetailAkun(
     @SerializedName("level") val level: String,
     @SerializedName("active") val active: String,
     @SerializedName("profile_photo_url") val profile_photo_url: String,
-    @SerializedName("image_store") val image_store: String
+    @SerializedName("image_store") val image_store: String,
+    @SerializedName("saldo") val saldo: String,
+    @SerializedName("fee") val fee: String,
+    @SerializedName("laundry_per_kg") val laundry_per_kg: String
 )
 
 data class ResOrder(

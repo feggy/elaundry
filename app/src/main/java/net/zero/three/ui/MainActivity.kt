@@ -19,19 +19,17 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import kotlinx.android.synthetic.main.activity_main.*
-import net.zero.three.R
-import net.zero.three.Status
+import net.zero.three.*
 import net.zero.three.api.payload.response.ResStore
 import net.zero.three.dialog.AppAlertDialog
 import net.zero.three.dialog.ConfirmationDialog
 import net.zero.three.dialog.LoadingDialog
-import net.zero.three.distanceInKm
-import net.zero.three.getDataDistance
 import net.zero.three.persistant.SessionManager
 import net.zero.three.ui.login.LoginActivity
 import net.zero.three.ui.order.OrderActivity
 import net.zero.three.ui.profile.ProfileActivity
 import net.zero.three.ui.riwayat.RiwayatActivity
+import net.zero.three.ui.settings.SettingsActivity
 import net.zero.three.ui.splash.SplashActivity
 import net.zero.three.ui.store.StoreActivity
 import net.zero.three.viewmodel.AuthViewModel
@@ -59,6 +57,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         init()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        window.statusBarColor = resources.getColor(R.color.white)
     }
 
     private fun init() {
@@ -128,6 +131,10 @@ class MainActivity : AppCompatActivity() {
         btnHistory.setOnClickListener {
             RiwayatActivity.show(this)
         }
+
+        vSettings.setOnClickListener {
+            SettingsActivity.show(this)
+        }
     }
 
     private fun getDetailAkun() {
@@ -146,12 +153,22 @@ class MainActivity : AppCompatActivity() {
                         vNama.text = it.name
                         vLevel.text = it.level
 
-                        if (it.active == Status.REGISTER.id.toString() && it.level == "Merchant") {
-                            btnUpgrade.visibility = View.VISIBLE
+                        if (it.level == "Merchant") {
+                            lytSaldo.visibility = View.VISIBLE
+                            vSaldo.text = it.saldo.toDouble().toCurrency("Rp")
+
+                            if (it.active == Status.REGISTER.id.toString()) {
+                                btnUpgrade.visibility = View.VISIBLE
+                            }
                         }
 
                         myLat = it.latitude
                         myLong = it.longitude
+
+                        SessionManager.instance.hargaPerKg = it.laundry_per_kg
+                        SessionManager.instance.biayaAdmin = it.fee
+                        SessionManager.instance.userId = it.id
+                        SessionManager.instance.level = it.level
 
                         getStore(myLat, myLong)
                     }

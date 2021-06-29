@@ -10,19 +10,29 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.dialog_detail_order.*
+import kotlinx.android.synthetic.main.dialog_detail_order.btnOrder
+import kotlinx.android.synthetic.main.dialog_detail_order.footer
 import kotlinx.android.synthetic.main.dialog_detail_order.vAlamat
 import kotlinx.android.synthetic.main.dialog_detail_order.vAlamatLaundry
+import kotlinx.android.synthetic.main.dialog_detail_order.vBerat
+import kotlinx.android.synthetic.main.dialog_detail_order.vBiayaLayanan
+import kotlinx.android.synthetic.main.dialog_detail_order.vCatatan
 import kotlinx.android.synthetic.main.dialog_detail_order.vEmail
 import kotlinx.android.synthetic.main.dialog_detail_order.vNama
 import kotlinx.android.synthetic.main.dialog_detail_order.vNamaLaundry
 import kotlinx.android.synthetic.main.dialog_detail_order.vNohp
 import kotlinx.android.synthetic.main.dialog_detail_order.vNohpLaundry
+import kotlinx.android.synthetic.main.dialog_detail_order.vToolbar
+import kotlinx.android.synthetic.main.dialog_detail_order.vTotalAmount
+import kotlinx.android.synthetic.main.dialog_detail_order.vTotalPembayaran
 import net.zero.three.*
 import net.zero.three.api.payload.response.ResDetailAkun
 import net.zero.three.api.payload.response.ResOrder
 import net.zero.three.api.payload.response.ResPayment
 import net.zero.three.api.payload.response.ResStore
+import net.zero.three.ui.MainActivity
 import net.zero.three.viewmodel.AuthViewModel
 import java.util.*
 
@@ -45,6 +55,10 @@ class DetailOrderDialog : DialogFragment() {
     private var orderId = ""
     var fromOrder: Boolean? = false
     private lateinit var _vm: AuthViewModel
+
+    var paymentMethod = ""
+    var totalAmount = ""
+    var adminFee = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -103,6 +117,13 @@ class DetailOrderDialog : DialogFragment() {
             val kodePembayaran = vKodePembayaran.text.toString()
             copyClipBoard(requireContext(), kodePembayaran)
         }
+
+        btnOrder.setOnClickListener {
+            PaymentMethodDialog.show(childFragmentManager) {
+                paymentMethod = it
+                pay()
+            }
+        }
     }
 
     private fun getDetailOrder() {
@@ -127,6 +148,7 @@ class DetailOrderDialog : DialogFragment() {
 
                         vOrderId.text = it.id_order
                         vInvoiceId.text = it.id_invoice
+                        if (it.id_invoice.isNullOrEmpty()) vInvoiceId.text = "-"
                         if (it.status == Payment.PAID.id.toString()) {
                             vStatusPembayaran.text = "Lunas"
                             footer.visibility = View.GONE
@@ -156,6 +178,9 @@ class DetailOrderDialog : DialogFragment() {
                         vKodePembayaran.text = it.pay_code
                         vBiayaLayanan.text = it.biaya_layanan
                         vTotalPembayaran.text = it.total_bayar.toDouble().toCurrency("Rp")
+
+                        totalAmount = it.sub_total
+                        adminFee = it.biaya_layanan
                     }
                 }
                 false -> {
@@ -167,6 +192,34 @@ class DetailOrderDialog : DialogFragment() {
                         callbackPositive = {
                             dismiss()
                         }
+                    )
+                }
+            }
+        })
+    }
+
+    private fun pay() {
+        LoadingDialog.show(childFragmentManager)
+        _vm.reqPayment(
+            paymentMethod,
+            totalAmount.toInt().toString(),
+            adminFee.toInt().toString(),
+            orderId,
+            vNama.text.toString(),
+            vEmail.text.toString(),
+            vNohp.text.toString()
+        ).observe(this, {
+            LoadingDialog.close(childFragmentManager)
+            when (it?.status) {
+                true -> {
+                    getDetailOrder()
+                }
+                false -> {
+                    AppAlertDialog.show(
+                        childFragmentManager,
+                        "Oops",
+                        it.message,
+                        error = true
                     )
                 }
             }

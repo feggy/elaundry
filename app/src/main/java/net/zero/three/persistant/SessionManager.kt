@@ -42,5 +42,39 @@ class SessionManager(val context: Context) {
             }
         }
 
+    var hargaPerKg: String
+        get() = pref.getString("hargaPerKg", "") ?: "0"
+        set(value) {
+            pref.edit {
+                putString("hargaPerKg", value)
+            }
+        }
+
+    var biayaAdmin: String
+        get() = pref.getString("biayaAdmin", "") ?: "0"
+        set(value) {
+            pref.edit {
+                putString("biayaAdmin", value)
+            }
+        }
+
+    var userId: String?
+        get() = pref.getString("userId", "")
+        set(value) {
+            pref.edit {
+                putString("userId", value)
+            }
+        }
+
+    var level: String?
+        get() = pref.getString("level", "")
+        set(value) {
+            pref.edit {
+                putString("level", value)
+            }
+        }
+
+
+
 
 }

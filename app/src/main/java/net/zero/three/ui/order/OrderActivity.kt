@@ -18,6 +18,7 @@ import net.zero.three.api.payload.response.ResOrder
 import net.zero.three.api.payload.response.ResPayment
 import net.zero.three.api.payload.response.ResStore
 import net.zero.three.dialog.*
+import net.zero.three.persistant.SessionManager
 import net.zero.three.ui.MainActivity
 import net.zero.three.viewmodel.AuthViewModel
 import java.text.SimpleDateFormat
@@ -84,8 +85,9 @@ class OrderActivity : AppCompatActivity() {
                 if (beratSekarang < 0) {
                     beratSekarang = 0.0
                 }
-                totalAmount = beratSekarang * amountSatuan
-                adminFee = totalAmount * 0.01
+                val admin = SessionManager.instance.biayaAdmin.toDouble()/100
+                totalAmount = beratSekarang * SessionManager.instance.hargaPerKg.toInt()
+                adminFee = totalAmount * admin
                 grandTotal = totalAmount + adminFee
 
                 vBerat.text = "$beratSekarang".toEditable()
@@ -200,11 +202,11 @@ class OrderActivity : AppCompatActivity() {
                 error = true
             )
             return false
-        } else if (beratSekarang < 1.5) {
+        } else if (totalAmount < 10000) {
             AppAlertDialog.show(
                 supportFragmentManager,
                 "Oops",
-                "Minimal laundry 1.5kg",
+                "Minimal pembayaran Rp10.000",
                 error = true
             )
             return false

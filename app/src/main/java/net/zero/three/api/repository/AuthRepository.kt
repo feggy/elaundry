@@ -303,4 +303,36 @@ class AuthRepository() {
             })
         return liveData
     }
+
+    fun updateBiaya(
+        idMerchant: String,
+        fee: String,
+        harga: String
+    ): LiveData<Resource<Any>> {
+        val liveData = MutableLiveData<Resource<Any>>()
+
+        auth.updateBiaya(ReqBiaya(idMerchant, fee, harga))
+            .enqueue(object : Callback<Resource<Any>> {
+                override fun onResponse(
+                    call: Call<Resource<Any>>,
+                    response: Response<Resource<Any>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<Resource<Any>>, t: Throwable) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
 }

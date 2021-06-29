@@ -54,3 +54,9 @@ data class ReqPayment(
     @SerializedName("email") val email : String,
     @SerializedName("noHp") val noHp : String
 )
+
+data class ReqBiaya(
+    @SerializedName("idMerchant") val idMerchant : String,
+    @SerializedName("fee") val fee : String,
+    @SerializedName("harga") val harga : String,
+)

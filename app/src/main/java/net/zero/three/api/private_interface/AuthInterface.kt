@@ -35,4 +35,7 @@ interface AuthInterface {
 
     @GET("laundry/detail/order/{orderId}")
     fun getDetailOrder(@Path("orderId") orderId: String?): Call<Resource<ResDetailOrder>>
+
+    @POST("laundry/update/merchant")
+    fun updateBiaya(@Body reqBiaya: ReqBiaya) : Call<Resource<Any>>
 }
