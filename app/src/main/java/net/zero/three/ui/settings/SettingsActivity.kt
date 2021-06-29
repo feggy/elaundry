@@ -62,8 +62,8 @@ class SettingsActivity : AppCompatActivity() {
             lytFee.visibility = View.VISIBLE
         }
 
-        biayaPerKg = SessionManager.instance.hargaPerKg.toString()
-        biayaFee = SessionManager.instance.biayaAdmin.toString()
+        biayaPerKg = SessionManager.instance.hargaPerKg
+        biayaFee = SessionManager.instance.biayaAdmin
         idMerchant = SessionManager.instance.userId.toString()
 
         Timber.e("_ $biayaPerKg $biayaFee $idMerchant")

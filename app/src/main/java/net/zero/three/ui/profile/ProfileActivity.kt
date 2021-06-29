@@ -104,6 +104,14 @@ class ProfileActivity : AppCompatActivity() {
                             })
                             .into(imgToko)
 
+                        if (SessionManager.instance.level == "Merchant") {
+                            lytNamaPemilik.visibility = View.VISIBLE
+                            vNamaPemilik.text = it.name
+                            vNama.text = it.store_name
+                            vTitleAlamat.text = "Alamat Toko"
+                            vTitleKoordinat.text = "Koordinat Lokasi Toko"
+                        }
+
                         getImageAddress()
                     }
                 }

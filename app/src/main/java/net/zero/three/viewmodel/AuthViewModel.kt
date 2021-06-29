@@ -42,6 +42,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getDetailAkun() = authRepository.getDetailAkun()
 
+    fun getStoreDetail(noHp: String) = authRepository.getStoreDetail(noHp)
+
     fun reqOrder(
         idUser: String,
         idMerchant: String,
@@ -51,9 +53,19 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         amountSatuan: String,
         fee: String,
         catatan: String
-    ) = authRepository.reqOrder(idUser, idMerchant, namaCucian, berat, amount, amountSatuan, fee, catatan)
+    ) = authRepository.reqOrder(
+        idUser,
+        idMerchant,
+        namaCucian,
+        berat,
+        amount,
+        amountSatuan,
+        fee,
+        catatan
+    )
 
-    fun getStore(nearest: Boolean? = false, lat: String? = "", long: String? = "") = authRepository.getStore(nearest, lat, long)
+    fun getStore(nearest: Boolean? = false, lat: String? = "", long: String? = "") =
+        authRepository.getStore(nearest, lat, long)
 
     fun getHistory(status: String) = authRepository.getHistory(status)
 
@@ -86,4 +98,13 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun getWithdrawalHistory(
         idMerchant: String
     ) = authRepository.getWithdrawalHistory(idMerchant)
+
+    fun getTransactionCustomer(
+        idMerchant: String
+    ) = authRepository.getTransactionCustomer(idMerchant)
+
+    fun updateStatus(
+        orderId: String,
+        status: String
+    ) = authRepository.updateStatus(orderId, status)
 }

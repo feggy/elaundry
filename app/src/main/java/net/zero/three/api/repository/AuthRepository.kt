@@ -130,6 +130,34 @@ class AuthRepository() {
         return liveData
     }
 
+    fun getStoreDetail(noHp: String): LiveData<Resource<ResDetailAkun>> {
+        val liveData = MutableLiveData<Resource<ResDetailAkun>>()
+
+        auth.getStoreDetail(noHp)
+            .enqueue(object : Callback<Resource<ResDetailAkun>> {
+                override fun onResponse(
+                    call: Call<Resource<ResDetailAkun>>,
+                    response: Response<Resource<ResDetailAkun>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<Resource<ResDetailAkun>>, t: Throwable) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
+
     fun reqOrder(
         idUser: String,
         idMerchant: String,
@@ -395,6 +423,73 @@ class AuthRepository() {
 
                 override fun onFailure(
                     call: Call<Resource<List<ResWithdrawalHistory>>>,
+                    t: Throwable
+                ) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
+
+    fun getTransactionCustomer(
+        idMerchant: String
+    ): LiveData<Resource<List<ResDetailOrder>>> {
+        val liveData = MutableLiveData<Resource<List<ResDetailOrder>>>()
+
+        auth.getTransactionCustomer(idMerchant)
+            .enqueue(object : Callback<Resource<List<ResDetailOrder>>> {
+                override fun onResponse(
+                    call: Call<Resource<List<ResDetailOrder>>>,
+                    response: Response<Resource<List<ResDetailOrder>>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<Resource<List<ResDetailOrder>>>,
+                    t: Throwable
+                ) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
+
+    fun updateStatus(
+        orderId: String,
+        status: String
+    ): LiveData<Resource<ResHistory>> {
+        val liveData = MutableLiveData<Resource<ResHistory>>()
+
+        auth.updateStatus(orderId, status)
+            .enqueue(object : Callback<Resource<ResHistory>> {
+                override fun onResponse(
+                    call: Call<Resource<ResHistory>>,
+                    response: Response<Resource<ResHistory>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<Resource<ResHistory>>,
                     t: Throwable
                 ) {
                     Log.e("ONFAILURE", "$t")

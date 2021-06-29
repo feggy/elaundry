@@ -106,11 +106,10 @@ fun getDataDistance(lat1: String, long1: String, lat2: String, long2: String): D
 
 fun String.convertDate(
     startFormat: String,
-    endFormat: String,
-    locale: Locale
+    endFormat: String
 ): String {
-    val inputFormat = SimpleDateFormat(startFormat, locale)
-    val outputFormat = SimpleDateFormat(endFormat, locale)
+    val inputFormat = SimpleDateFormat(startFormat)
+    val outputFormat = SimpleDateFormat(endFormat)
     val parsed: Date?
     var outputText = ""
 

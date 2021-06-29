@@ -51,6 +51,9 @@ class OrderActivity : AppCompatActivity() {
     var paymentMethod = ""
     var orderId = ""
 
+    var hargaPerKg = ""
+    var admin = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
@@ -78,6 +81,23 @@ class OrderActivity : AppCompatActivity() {
         vCatatan.imeOptions = EditorInfo.IME_ACTION_DONE
         vCatatan.setRawInputType(InputType.TYPE_CLASS_TEXT)
         vBerat.text = "0.0".toEditable()
+
+        if (SessionManager.instance.level == "Merchant") {
+            hargaPerKg = SessionManager.instance.hargaPerKg
+            admin = SessionManager.instance.biayaAdmin.toDouble()/100
+        } else {
+            _vm.getStoreDetail(resStore.no_hp).observe(this, {
+                when (it?.status) {
+                    true -> {
+                        it.data?.let {
+                            hargaPerKg = it.laundry_per_kg
+                            admin = it.fee.toDouble()/100
+                        }
+                    }
+                }
+            })
+        }
+
         _vm.berat.observe(this, {
             it?.let {
                 beratSekarang = Math.round(it * 100) / 100.0
@@ -85,8 +105,7 @@ class OrderActivity : AppCompatActivity() {
                 if (beratSekarang < 0) {
                     beratSekarang = 0.0
                 }
-                val admin = SessionManager.instance.biayaAdmin.toDouble()/100
-                totalAmount = beratSekarang * SessionManager.instance.hargaPerKg.toInt()
+                totalAmount = beratSekarang * hargaPerKg.toInt()
                 adminFee = totalAmount * admin
                 grandTotal = totalAmount + adminFee
 

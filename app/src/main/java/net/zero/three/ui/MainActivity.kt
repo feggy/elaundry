@@ -20,9 +20,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import net.zero.three.*
+import net.zero.three.api.payload.response.Antrian
+import net.zero.three.api.payload.response.ResDetailAkun
+import net.zero.three.api.payload.response.ResDetailOrder
 import net.zero.three.api.payload.response.ResStore
 import net.zero.three.dialog.AppAlertDialog
 import net.zero.three.dialog.ConfirmationDialog
+import net.zero.three.dialog.DetailOrderDialog
 import net.zero.three.dialog.LoadingDialog
 import net.zero.three.persistant.SessionManager
 import net.zero.three.ui.login.LoginActivity
@@ -35,6 +39,8 @@ import net.zero.three.ui.store.StoreActivity
 import net.zero.three.ui.withdrawal.WithdrawalActivity
 import net.zero.three.ui.withdrawal.WithdrawalHistoryActivity
 import net.zero.three.viewmodel.AuthViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,7 +58,9 @@ class MainActivity : AppCompatActivity() {
     var myLong: String = ""
 
     lateinit var adapterLaundryDistance: LaundryDistanceAdapter
+    lateinit var adapterAntrian: AntrianAdapter
     var dataLaundryDistance: ArrayList<ResStore> = ArrayList()
+    var dataAntrian = ArrayList<Antrian>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +108,8 @@ class MainActivity : AppCompatActivity() {
         vRecyclerDistance.adapter = adapterLaundryDistance
 
         getDetailAkun()
+
+        loadAntrian()
 
     }
 
@@ -167,10 +177,14 @@ class MainActivity : AppCompatActivity() {
                             lytSaldo.visibility = View.VISIBLE
                             vSaldo.text = it.saldo.toDouble().toCurrency("Rp")
                             lytWithdrawal.visibility = View.VISIBLE
+                            lytPemesanan.visibility = View.GONE
+                            vStoreDistance.visibility = View.GONE
 
                             if (it.active == Status.REGISTER.id.toString()) {
                                 btnUpgrade.visibility = View.VISIBLE
                             }
+                        } else if (it.level == "Pelanggan") {
+
                         }
 
                         myLat = it.latitude
@@ -244,6 +258,52 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun loadAntrian() {
+        adapterAntrian = AntrianAdapter(dataAntrian) {
+            DetailOrderDialog.show(
+                supportFragmentManager,
+                it.orderId
+            ) {
+
+            }
+        }
+        vRecyclerAntrian.apply {
+            adapter = adapterAntrian
+            layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
+        }
+
+        if (SessionManager.instance.level == "Merchant") {
+            getDataAntrianMerchant()
+        }
+    }
+
+    private fun getDataAntrianMerchant() {
+        _vm.getTransactionCustomer(SessionManager.instance.userId!!).observe(this, {
+            when (it?.status) {
+                true -> {
+                    it.data?.let {
+                        if (it.isNullOrEmpty()) {
+                            btnOrder.visibility = View.VISIBLE
+                        } else {
+                            it.forEach {
+                                dataAntrian.add(
+                                    Antrian(it.id_order, SessionManager.instance.userId!!, it.nama_pelanggan, it.hp_pelanggan, it.status, it.created_at)
+                                )
+                                var sort = dataAntrian.sortedByDescending { it.created_at }
+                                dataAntrian.clear()
+                                dataAntrian.addAll(sort)
+                                adapterAntrian.notifyDataSetChanged()
+                            }
+                        }
+                    }
+                }
+                false -> {
+
+                }
+            }
+        })
+    }
+
     class LaundryDistanceAdapter(
         val data: ArrayList<ResStore>,
         val callback: (ResStore) -> Unit
@@ -286,8 +346,56 @@ class MainActivity : AppCompatActivity() {
                     callback.invoke(item)
                 }
             }
+        }
+    }
 
+    class AntrianAdapter(
+        val data: ArrayList<Antrian>,
+        val callback: (Antrian) -> Unit
+    ) : RecyclerView.Adapter<AntrianAdapter.ViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val inflater = LayoutInflater.from(parent.context)
+            val view = inflater.inflate(R.layout.list_item_antrian_pelanggan, parent, false)
+
+            return ViewHolder(view)
         }
 
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.bind(data[position], callback)
+        }
+
+        override fun getItemCount(): Int = data.size
+
+        class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+            val vNama: TextView = itemView.findViewById(R.id.vNama)
+            val vNohp: TextView = itemView.findViewById(R.id.vNohp)
+            val vStatus: TextView = itemView.findViewById(R.id.vStatus)
+            val vTgl: TextView = itemView.findViewById(R.id.vTgl)
+
+            fun bind(item: Antrian, callback: (Antrian) -> Unit) {
+
+                vNama.text = item.nama
+                vNohp.text = item.no_hp
+
+                if (item.status_pengerjaan == Progress.APPROVE.name) {
+                    vStatus.text = "Disetujui"
+                } else if (item.status_pengerjaan == Progress.CANCEL.name) {
+                    vStatus.text = "Dibatalkan"
+                } else if (item.status_pengerjaan == Progress.FINISH.name) {
+                    vStatus.text = "Selesai"
+                } else if (item.status_pengerjaan == Progress.PROGRESS.name) {
+                    vStatus.text = "Diproses"
+                } else {
+                    vStatus.text = "Menunggu"
+                }
+
+                vTgl.text = item.created_at.convertDate("yyyy-MM-dd'T'HH:mm", "dd-MM-yyyy HH:mm")
+
+                itemView.setOnClickListener {
+                    callback.invoke(item)
+                }
+            }
+        }
     }
 }

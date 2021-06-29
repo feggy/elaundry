@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_riwayat.*
+import kotlinx.android.synthetic.main.activity_riwayat.vRecycler
+import kotlinx.android.synthetic.main.activity_riwayat.vToolbar
 import net.zero.three.*
 import net.zero.three.api.payload.response.ResHistory
 import net.zero.three.constants.Constants
@@ -70,11 +72,15 @@ class RiwayatActivity : AppCompatActivity() {
         vRecycler.adapter = adapter
 
         LoadingDialog.show(supportFragmentManager)
-        _vm.getHistory("0").observe(this, {
+        _vm.getHistory("").observe(this, {
             LoadingDialog.close(supportFragmentManager)
             when (it?.status) {
                 true -> {
                     it.data?.let {
+                        if (it.isNullOrEmpty()) {
+                            lytNotFound.visibility = View.VISIBLE
+                        }
+
                         dataHistory.addAll(it)
                         val dataSort = dataHistory.sortedByDescending { it.created_at }
                         dataHistory.clear()
@@ -137,7 +143,7 @@ class RiwayatActivity : AppCompatActivity() {
                 vCatatan.text = item.catatan
                 vTotal.text = item.amount.toDouble().toCurrency("Rp")
 
-                val date = item.created_at.convertDate("yyyy-mm-dd", "dd-mm-yyyy", Locale("ID"))
+                val date = item.created_at.convertDate("yyyy-mm-dd", "dd-mm-yyyy")
                 vTglPesanan.text = "Tanggal pesanan: $date"
 
                 if (item.status_pengerjaan == Progress.APPROVE.name) {
@@ -146,12 +152,18 @@ class RiwayatActivity : AppCompatActivity() {
                     vStatus.text = "Dibatalkan"
                 } else if (item.status_pengerjaan == Progress.FINISH.name) {
                     vStatus.text = "Selesai"
+                } else if (item.status_pengerjaan == Progress.PROGRESS.name) {
+                    vStatus.text = "Diproses"
                 } else {
                     vStatus.text = "Menunggu"
                 }
 
                 if (item.status_pembayaran == Payment.PAID.id.toString()) {
                     vStatusPembayaran.text = "Lunas"
+                    imgStatus.setImageResource(R.drawable.paid)
+                    btnBayar.visibility = View.INVISIBLE
+                } else if (item.status_pembayaran == Payment.FAILED.id.toString()) {
+                    vStatusPembayaran.text = "Dibatalkan"
                     imgStatus.setImageResource(R.drawable.paid)
                     btnBayar.visibility = View.INVISIBLE
                 } else {

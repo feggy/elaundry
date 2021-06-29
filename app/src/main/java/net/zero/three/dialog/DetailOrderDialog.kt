@@ -32,6 +32,7 @@ import net.zero.three.api.payload.response.ResDetailAkun
 import net.zero.three.api.payload.response.ResOrder
 import net.zero.three.api.payload.response.ResPayment
 import net.zero.three.api.payload.response.ResStore
+import net.zero.three.persistant.SessionManager
 import net.zero.three.ui.MainActivity
 import net.zero.three.viewmodel.AuthViewModel
 import java.util.*
@@ -59,6 +60,7 @@ class DetailOrderDialog : DialogFragment() {
     var paymentMethod = ""
     var totalAmount = ""
     var adminFee = ""
+    var status_pengerjaan = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -118,12 +120,46 @@ class DetailOrderDialog : DialogFragment() {
             copyClipBoard(requireContext(), kodePembayaran)
         }
 
+        btnBatalkan.setOnClickListener {
+            updateStatus(Progress.CANCEL.id.toString())
+        }
+
         btnOrder.setOnClickListener {
-            PaymentMethodDialog.show(childFragmentManager) {
-                paymentMethod = it
-                pay()
+            if (SessionManager.instance.level == "Merchant") {
+                updateStatus((status_pengerjaan.toInt() + 1).toString())
+            } else {
+                PaymentMethodDialog.show(childFragmentManager) {
+                    paymentMethod = it
+                    pay()
+                }
             }
         }
+    }
+
+    private fun updateStatus(statusPengerjaan: String) {
+        LoadingDialog.show(childFragmentManager)
+        _vm.updateStatus(orderId, statusPengerjaan)
+            .observe(this, {
+                LoadingDialog.close(childFragmentManager)
+                when (it?.status) {
+                    true -> {
+                        AppAlertDialog.show(childFragmentManager,
+                            "Sukses",
+                            "Berhasil mengubah status",
+                            callbackPositive = {
+                                initUI()
+                            })
+                    }
+                    false -> {
+                        AppAlertDialog.show(
+                            childFragmentManager,
+                            "Oops",
+                            it.message,
+                            true
+                        )
+                    }
+                }
+            })
     }
 
     private fun getDetailOrder() {
@@ -153,12 +189,16 @@ class DetailOrderDialog : DialogFragment() {
                             vStatusPembayaran.text = "Lunas"
                             footer.visibility = View.GONE
                             lytKodePembayaran.visibility = View.GONE
+                        } else if (it.status == Payment.FAILED.id.toString()) {
+                            vStatusPembayaran.text = "Dibatalkan"
+                            footer.visibility = View.GONE
+                            lytKodePembayaran.visibility = View.GONE
                         } else {
                             vStatusPembayaran.text = "Belum dibayar"
                         }
 
                         vTgl.text =
-                            it.created_at.convertDate("yyyy-mm-dd", "dd-mm-yyyy", Locale("ID"))
+                            it.created_at.convertDate("yyyy-mm-dd", "dd-mm-yyyy")
 
                         if (it.payment_method == PaymentMethod.BRIVA.name) {
                             vMetodePembayaran.text = "BRI Virtual Account"
@@ -181,6 +221,28 @@ class DetailOrderDialog : DialogFragment() {
 
                         totalAmount = it.sub_total
                         adminFee = it.biaya_layanan
+                        status_pengerjaan = it.status
+
+                        if (SessionManager.instance.level == "Merchant") {
+                            btnBatalkan.visibility = View.VISIBLE
+                            when (it.status) {
+                                Progress.ORDER.id.toString() -> {
+                                    btnOrder.text = "Menyetujui"
+                                }
+                                Progress.APPROVE.id.toString() -> {
+                                    btnOrder.text = "Proses"
+                                }
+                                Progress.PROGRESS.id.toString() -> {
+                                    btnOrder.text = "Selesaikan"
+                                }
+                                Progress.FINISH.id.toString() -> {
+                                    btnOrder.visibility = View.GONE
+                                }
+                                Progress.CANCEL.id.toString() -> {
+                                    btnBatalkan.visibility = View.GONE
+                                }
+                            }
+                        }
                     }
                 }
                 false -> {

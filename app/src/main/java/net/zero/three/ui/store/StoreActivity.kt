@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_store.*
 import net.zero.three.R
 import net.zero.three.api.payload.response.ResStore
+import net.zero.three.dialog.AppAlertDialog
 import net.zero.three.dialog.ConfirmationDialog
 import net.zero.three.dialog.LoadingDialog
 import net.zero.three.distanceInKm
@@ -124,12 +125,20 @@ class StoreActivity : AppCompatActivity() {
             when (it?.status) {
                 true -> {
                     it.data?.let {
+                        if (it.isNullOrEmpty()) {
+                            lytNotFound.visibility = View.VISIBLE
+                        }
                         dataLaundryDistance.addAll(it)
                         adapterLaundryDistance.notifyDataSetChanged()
                     }
                 }
                 false -> {
-
+                    AppAlertDialog.show(
+                        supportFragmentManager,
+                        "Oops",
+                        it.message,
+                        error = true
+                    )
                 }
             }
         })

@@ -329,6 +329,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lytPemesanan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -456,6 +457,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textFontWeight="1"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="15dp"
                             android:layout_weight="1"
@@ -463,29 +465,55 @@
                             android:text="Antrian Pesanan"
                             android:textColor="@color/black"
                             android:textSize="13sp" />
+
+                        <LinearLayout
+                            android:id="@+id/btnSeeAllAntrian"
+                            android:layout_width="85dp"
+                            android:layout_height="18dp"
+                            android:background="@drawable/bg_capsule"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat_semi_bold"
+                                android:text="Lihat Semua"
+                                android:textColor="#42C0FB"
+                                android:textSize="10sp" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="110dp">
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/vRecyclerAntrian"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/list_item_antrian_pelanggan" />
+
                         <LinearLayout
                             android:id="@+id/btnOrder"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone"
+                            tools:visibility="visible">
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="50dp"
                                 android:layout_gravity="center_horizontal"
                                 android:adjustViewBounds="true"
-                                android:src="@drawable/ic_cart" />
+                                android:src="@drawable/not_found" />
 
                             <TextView
+                                android:id="@+id/vDescAntrian"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
                                 android:fontFamily="@font/montserrat_regular"
                                 android:text="@string/desc_laundry"
                                 android:textAlignment="center"

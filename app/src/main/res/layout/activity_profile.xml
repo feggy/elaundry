@@ -76,15 +76,58 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_regular"
+                android:paddingBottom="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/grey"
                 android:textSize="12sp"
                 tools:text="08091000100" />
 
             <LinearLayout
+                android:id="@+id/lytNamaPemilik"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_semi_bold"
+                        android:text="Nama Pemilik"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/vNamaPemilik"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/grey"
+                        android:textSize="13sp"
+                        tools:text="Gred Meno" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/spacer" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -121,6 +164,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/vTitleAlamat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_semi_bold"
@@ -152,10 +196,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/vTitleKoordinat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_semi_bold"
-                    android:text="Koordinat lokasi rumah"
+                    android:text="Koordinat Lokasi Rumah"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 

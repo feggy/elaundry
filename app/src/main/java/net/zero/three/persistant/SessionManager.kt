@@ -20,20 +20,6 @@ class SessionManager(val context: Context) {
         pref = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
     }
 
-
-    /*
-    .
-    Contoh penerapan SessionManager
-    .
-    var example: String?
-        get() = pref.getString(SharedPrefrenceConstant.EXAMPLE, "")
-        set(value) {
-            pref.edit {
-                putString(SharedPrefrenceConstant.EXAMPLE, value)
-            }
-        }
-    */
-
     var nohp: String?
         get() = pref.getString("NOHP", "")
         set(value) {
@@ -75,14 +61,11 @@ class SessionManager(val context: Context) {
         }
 
     var saldo: String
-        get() = pref.getString("level", "") ?: "0"
+        get() = pref.getString("saldo", "") ?: "0"
         set(value) {
             pref.edit {
-                putString("level", value)
+                putString("saldo", value)
             }
         }
-
-
-
 
 }

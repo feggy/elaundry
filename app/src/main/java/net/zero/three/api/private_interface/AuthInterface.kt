@@ -21,6 +21,9 @@ interface AuthInterface {
     @GET("laundry/detail/{noHp}")
     fun getAkunDetail(@Path("noHp") noHp: String?): Call<Resource<ResDetailAkun>>
 
+    @GET("laundry/detail/{noHp}")
+    fun getStoreDetail(@Path("noHp") noHp: String?): Call<Resource<ResDetailAkun>>
+
     @POST("laundry/order")
     fun reqOrder(@Body reqOrder: ReqOrder): Call<Resource<ResOrder>>
 
@@ -31,17 +34,26 @@ interface AuthInterface {
     fun getHistory(@Body reqHistory: ReqHistory): Call<Resource<List<ResHistory>>>
 
     @POST("laundry/payment")
-    fun reqPayment(@Body reqPayment: ReqPayment) : Call<Resource<ResPayment>>
+    fun reqPayment(@Body reqPayment: ReqPayment): Call<Resource<ResPayment>>
 
     @GET("laundry/detail/order/{orderId}")
     fun getDetailOrder(@Path("orderId") orderId: String?): Call<Resource<ResDetailOrder>>
 
     @POST("laundry/update/merchant")
-    fun updateBiaya(@Body reqBiaya: ReqBiaya) : Call<Resource<Any>>
+    fun updateBiaya(@Body reqBiaya: ReqBiaya): Call<Resource<Any>>
 
     @POST("laundry/withdrawl")
-    fun reqWithdrawal(@Body reqWithdrawal: ReqWithdrawal) : Call<Resource<Any>>
+    fun reqWithdrawal(@Body reqWithdrawal: ReqWithdrawal): Call<Resource<Any>>
 
     @GET("laundry/list/withdrawl/{idMerchant}")
     fun getWithdrawalHistory(@Path("idMerchant") idMerchant: String?): Call<Resource<List<ResWithdrawalHistory>>>
+
+    @GET("laundry/list/order/merchant/{idMerchant}")
+    fun getTransactionCustomer(@Path("idMerchant") idMerchant: String?): Call<Resource<List<ResDetailOrder>>>
+
+    @GET("laundry/status/order/{orderId}/{status}")
+    fun updateStatus(
+        @Path("orderId") orderId: String?,
+        @Path("status") status: String?,
+    ): Call<Resource<ResHistory>>
 }

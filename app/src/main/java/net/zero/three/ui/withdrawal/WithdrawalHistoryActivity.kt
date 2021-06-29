@@ -72,6 +72,10 @@ class WithdrawalHistoryActivity : AppCompatActivity() {
             when (it?.status) {
                 true -> {
                     it.data?.let {
+                        if (it.isNullOrEmpty()) {
+                            lytNotFound.visibility = View.VISIBLE
+                        }
+
                         itemlist.addAll(it)
                         val sort = itemlist.sortedByDescending { it.created_at }
                         itemlist.clear()
@@ -158,7 +162,7 @@ class WithdrawalHistoryActivity : AppCompatActivity() {
                     vStatus.text = Withdrawal.REQUEST.name
                 }
 
-                vTgl.text = item.created_at.convertDate("yyyy-mm-dd", "dd-mm-yyyy", Locale("ID"))
+                vTgl.text = item.created_at.convertDate("yyyy-mm-dd", "dd-mm-yyyy")
             }
 
         }

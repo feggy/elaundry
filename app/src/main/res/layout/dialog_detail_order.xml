@@ -15,7 +15,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/back_icon_grey"
         app:title="Rincian Pesanan"
-        app:titleTextColor="@color/black_title" />
+        app:titleTextColor="@color/black_title">
+
+        <TextView
+            android:id="@+id/btnBatalkan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:text="Batalkan"
+            android:textColor="@color/red"
+            android:textSize="13sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -644,11 +658,11 @@
         android:id="@+id/vieww"
         android:layout_width="match_parent"
         android:layout_height="6dp"
-        app:layout_constraintBottom_toTopOf="@+id/footer"
-        android:background="@drawable/top_shadow"
         android:alpha=".5"
+        android:background="@drawable/top_shadow"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        tools:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/footer"
@@ -656,8 +670,8 @@
         android:layout_height="50dp"
         android:background="@color/white"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="visible">
 
         <LinearLayout
