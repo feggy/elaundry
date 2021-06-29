@@ -38,4 +38,10 @@ interface AuthInterface {
 
     @POST("laundry/update/merchant")
     fun updateBiaya(@Body reqBiaya: ReqBiaya) : Call<Resource<Any>>
+
+    @POST("laundry/withdrawl")
+    fun reqWithdrawal(@Body reqWithdrawal: ReqWithdrawal) : Call<Resource<Any>>
+
+    @GET("laundry/list/withdrawl/{idMerchant}")
+    fun getWithdrawalHistory(@Path("idMerchant") idMerchant: String?): Call<Resource<List<ResWithdrawalHistory>>>
 }

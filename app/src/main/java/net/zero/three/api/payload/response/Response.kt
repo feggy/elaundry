@@ -136,3 +136,14 @@ data class ResDetailOrder(
     @SerializedName("biaya_layanan") var biaya_layanan : String,
     @SerializedName("total_bayar") var total_bayar : String
 )
+
+data class ResWithdrawalHistory(
+    @SerializedName("id") val id : String,
+    @SerializedName("store_name") val store_name : String,
+    @SerializedName("bankRek") val bankRek : String,
+    @SerializedName("namaRek") val namaRek : String,
+    @SerializedName("noRek") val noRek : String,
+    @SerializedName("withdrawl") val withdrawl : String,
+    @SerializedName("status_withdrawl") val status_withdrawl : String,
+    @SerializedName("created_at") val created_at : String
+)

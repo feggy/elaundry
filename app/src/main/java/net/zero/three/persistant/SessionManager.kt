@@ -74,6 +74,14 @@ class SessionManager(val context: Context) {
             }
         }
 
+    var saldo: String
+        get() = pref.getString("level", "") ?: "0"
+        set(value) {
+            pref.edit {
+                putString("level", value)
+            }
+        }
+
 
 
 

@@ -138,8 +138,14 @@ enum class Status(val id: Int) {
     CANCEL(2)
 }
 
+enum class Withdrawal(val id: Int) {
+    REQUEST(0),
+    ACCEPTED(1),
+    REJECTED(2)
+}
+
 enum class Payment(val id: Int) {
-    ORDER(0),
+    REQUEST(0),
     PAID(3),
     FAILED(2)
 }

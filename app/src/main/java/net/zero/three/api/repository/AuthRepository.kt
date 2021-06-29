@@ -335,4 +335,71 @@ class AuthRepository() {
             })
         return liveData
     }
+
+    fun reqWithdrawal(
+        noHp: String,
+        withdrawl: String,
+        noRek: String,
+        bankRek: String,
+        namaReka: String
+    ): LiveData<Resource<Any>> {
+        val liveData = MutableLiveData<Resource<Any>>()
+
+        auth.reqWithdrawal(ReqWithdrawal(noHp, withdrawl, noRek, bankRek, namaReka))
+            .enqueue(object : Callback<Resource<Any>> {
+                override fun onResponse(
+                    call: Call<Resource<Any>>,
+                    response: Response<Resource<Any>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<Resource<Any>>, t: Throwable) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
+
+    fun getWithdrawalHistory(
+        idMerchant: String
+    ): LiveData<Resource<List<ResWithdrawalHistory>>> {
+        val liveData = MutableLiveData<Resource<List<ResWithdrawalHistory>>>()
+
+        auth.getWithdrawalHistory(idMerchant)
+            .enqueue(object : Callback<Resource<List<ResWithdrawalHistory>>> {
+                override fun onResponse(
+                    call: Call<Resource<List<ResWithdrawalHistory>>>,
+                    response: Response<Resource<List<ResWithdrawalHistory>>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<Resource<List<ResWithdrawalHistory>>>,
+                    t: Throwable
+                ) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
 }

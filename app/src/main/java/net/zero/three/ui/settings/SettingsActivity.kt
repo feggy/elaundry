@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -78,7 +79,10 @@ class SettingsActivity : AppCompatActivity() {
 
         btnLogout.setOnClickListener {
             SessionManager.instance.nohp = ""
-            SplashActivity.show(this)
+            LoadingDialog.show(supportFragmentManager)
+            Handler().postDelayed({
+                SplashActivity.show(this)
+            },500)
         }
 
         vPerkg.setOnClickListener {

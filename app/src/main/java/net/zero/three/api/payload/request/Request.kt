@@ -60,3 +60,11 @@ data class ReqBiaya(
     @SerializedName("fee") val fee : String,
     @SerializedName("harga") val harga : String,
 )
+
+data class ReqWithdrawal(
+    @SerializedName("noHp") val noHp : String,
+    @SerializedName("withdrawl") val withdrawl : String,
+    @SerializedName("noRek") val noRek : String,
+    @SerializedName("bankRek") val bankRek : String,
+    @SerializedName("namaRek") val namaRek : String
+)

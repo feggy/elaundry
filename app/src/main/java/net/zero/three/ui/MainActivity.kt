@@ -32,6 +32,8 @@ import net.zero.three.ui.riwayat.RiwayatActivity
 import net.zero.three.ui.settings.SettingsActivity
 import net.zero.three.ui.splash.SplashActivity
 import net.zero.three.ui.store.StoreActivity
+import net.zero.three.ui.withdrawal.WithdrawalActivity
+import net.zero.three.ui.withdrawal.WithdrawalHistoryActivity
 import net.zero.three.viewmodel.AuthViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -135,6 +137,14 @@ class MainActivity : AppCompatActivity() {
         vSettings.setOnClickListener {
             SettingsActivity.show(this)
         }
+
+        btnWithdrawal.setOnClickListener {
+            WithdrawalActivity.show(this)
+        }
+
+        btnHistoryPenarikan.setOnClickListener {
+            WithdrawalHistoryActivity.show(this)
+        }
     }
 
     private fun getDetailAkun() {
@@ -156,6 +166,7 @@ class MainActivity : AppCompatActivity() {
                         if (it.level == "Merchant") {
                             lytSaldo.visibility = View.VISIBLE
                             vSaldo.text = it.saldo.toDouble().toCurrency("Rp")
+                            lytWithdrawal.visibility = View.VISIBLE
 
                             if (it.active == Status.REGISTER.id.toString()) {
                                 btnUpgrade.visibility = View.VISIBLE
@@ -169,6 +180,7 @@ class MainActivity : AppCompatActivity() {
                         SessionManager.instance.biayaAdmin = it.fee
                         SessionManager.instance.userId = it.id
                         SessionManager.instance.level = it.level
+                        SessionManager.instance.saldo = it.saldo
 
                         getStore(myLat, myLong)
                     }

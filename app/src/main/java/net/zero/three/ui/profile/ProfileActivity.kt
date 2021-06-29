@@ -122,14 +122,6 @@ class ProfileActivity : AppCompatActivity() {
         btnRefresh.setOnClickListener {
             getImageAddress()
         }
-
-        btnLogout.setOnClickListener {
-            SessionManager.instance.nohp = ""
-            LoadingDialog.show(supportFragmentManager)
-            Handler().postDelayed({
-                SplashActivity.show(this)
-            },500)
-        }
     }
 
     private fun getImageAddress() {

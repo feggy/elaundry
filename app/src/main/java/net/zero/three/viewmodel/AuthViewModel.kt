@@ -74,4 +74,16 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         fee: String,
         harga: String
     ) = authRepository.updateBiaya(idMerchant, fee, harga)
+
+    fun reqWithdrawal(
+        noHp: String,
+        withdrawl: String,
+        noRek: String,
+        bankRek: String,
+        namaReka: String
+    ) = authRepository.reqWithdrawal(noHp, withdrawl, noRek, bankRek, namaReka)
+
+    fun getWithdrawalHistory(
+        idMerchant: String
+    ) = authRepository.getWithdrawalHistory(idMerchant)
 }
