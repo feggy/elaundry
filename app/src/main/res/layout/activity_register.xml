@@ -54,9 +54,18 @@
                     android:paddingRight="20dp"
                     android:paddingBottom="50dp">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="Nama"
+                            android:textColor="@color/grey"
+                            android:textSize="11sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/tilNama"
@@ -74,237 +83,333 @@
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/transparent"
                                 android:fontFamily="@font/montserrat_regular"
-                                android:hint="Nama"
                                 android:imeOptions="actionNext"
                                 android:inputType="textPersonName"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
-                    </RelativeLayout>
+                    </LinearLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilUsername"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_rounded_border_grey"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:textColorHint="@color/blue"
-                        app:hintEnabled="false">
+                        android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etUsername"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="Nomor HP"
+                            android:textColor="@color/grey"
+                            android:textSize="11sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilUsername"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/transparent"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:hint="Nomor Hp"
-                            android:imeOptions="actionNext"
-                            android:inputType="phone"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:background="@drawable/bg_rounded_border_grey"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:textColorHint="@color/blue"
+                            app:hintEnabled="false">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilPassword"
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etUsername"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/transparent"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:imeOptions="actionNext"
+                                android:inputType="phone"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_rounded_border_grey"
-                        android:textColorHint="@color/blue"
-                        app:hintEnabled="false"
-                        app:passwordToggleEnabled="true">
+                        android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etPassword"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="Kata Sandi"
+                            android:textColor="@color/grey"
+                            android:textSize="11sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilPassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/transparent"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:hint="Kata Sandi"
-                            android:imeOptions="actionNext"
-                            android:inputType="textPassword"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:background="@drawable/bg_rounded_border_grey"
+                            android:textColorHint="@color/blue"
+                            app:hintEnabled="false"
+                            app:passwordToggleEnabled="true">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilEmail"
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etPassword"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/transparent"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:imeOptions="actionNext"
+                                android:inputType="textPassword"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_rounded_border_grey"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:textColorHint="@color/blue"
-                        app:hintEnabled="false">
+                        android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etEmail"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="Email"
+                            android:textColor="@color/grey"
+                            android:textSize="11sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/transparent"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:hint="E-Mail"
-                            android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:background="@drawable/bg_rounded_border_grey"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:textColorHint="@color/blue"
+                            app:hintEnabled="false">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilLevel"
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etEmail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/transparent"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:imeOptions="actionNext"
+                                android:inputType="textEmailAddress"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_rounded_border_grey"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:textColorHint="@color/blue"
-                        app:hintEnabled="false">
+                        android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etLevel"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="Jenis Akun"
+                            android:textColor="@color/grey"
+                            android:textSize="11sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilLevel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/transparent"
-                            android:editable="false"
-                            android:focusable="false"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:hint="Jenis Akun"
-                            android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:background="@drawable/bg_rounded_border_grey"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:textColorHint="@color/blue"
+                            app:hintEnabled="false">
 
-                    <com.google.android.material.textfield.TextInputLayout
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etLevel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/transparent"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:imeOptions="actionNext"
+                                android:inputType="textEmailAddress"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/tilNamaToko"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_rounded_border_grey"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:textColorHint="@color/blue"
+                        android:orientation="vertical"
                         android:visibility="gone"
-                        app:hintEnabled="false"
                         tools:visibility="visible">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etNamaToko"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/transparent"
                             android:fontFamily="@font/montserrat_regular"
-                            android:hint="Nama Toko"
-                            android:imeOptions="actionNext"
-                            android:inputType="textPersonName"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:text="Nama Toko"
+                            android:textColor="@color/grey"
+                            android:textSize="11sp" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp">
-
-                        <EditText
-                            android:id="@+id/etAlamat"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_rounded_border_grey"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:gravity="top|left"
-                            android:hint="Alamat"
-                            android:imeOptions="actionDone"
-                            android:inputType="textMultiLine"
-                            android:minLines="4"
-                            android:padding="10dp"
-                            android:scrollbars="vertical"
-                            android:textSize="14sp" />
-                    </RelativeLayout>
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:textColorHint="@color/blue"
+                            app:hintEnabled="false">
 
-                    <RelativeLayout
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etNamaToko"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/transparent"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:imeOptions="actionNext"
+                                android:inputType="textPersonName"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="Alamat"
+                            android:textColor="@color/grey"
+                            android:textSize="11sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/etAlamat"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_rounded_border_grey"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:gravity="top|left"
+                                android:imeOptions="actionDone"
+                                android:inputType="textMultiLine"
+                                android:minLines="4"
+                                android:padding="10dp"
+                                android:scrollbars="vertical"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/btnImgStore"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_rounded_border_grey"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
+                        android:orientation="vertical"
                         android:visibility="gone"
                         tools:visibility="visible">
 
-                        <LinearLayout
-                            android:id="@+id/lytImgStore"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:orientation="horizontal"
-                            android:visibility="gone">
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="Foto Toko"
+                            android:textColor="@color/grey"
+                            android:textSize="11sp" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="90dp"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/montserrat_semi_bold"
-                                android:gravity="center_vertical"
-                                android:text="Foto Toko"
-                                android:textColor="@color/blue"
-                                android:textSize="13sp" />
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="155dp"
-                                android:layout_height="90dp"
-                                app:cardCornerRadius="6dp"
-                                app:cardElevation="0dp"
-                                app:cardUseCompatPadding="true">
-
-                                <ImageView
-                                    android:id="@+id/imgStore"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="fitXY"
-                                    android:src="@drawable/laundry_img" />
-                            </androidx.cardview.widget.CardView>
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:id="@+id/lytAddStore"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:orientation="vertical"
+                            android:layout_height="100dp"
+                            android:background="@drawable/bg_rounded_border_grey"
                             android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:visibility="visible">
+                            android:paddingRight="10dp">
 
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_centerInParent="true"
-                                android:layout_gravity="center"
-                                android:src="@drawable/add_file" />
-
-                            <TextView
+                            <LinearLayout
+                                android:id="@+id/lytImgStore"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="3dp"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:text="Foto depan Laundry, untuk memudahkan Pelanggan mencari"
-                                android:textAlignment="center"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-                    </RelativeLayout>
+                                android:layout_centerVertical="true"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="90dp"
+                                    android:layout_weight="1"
+                                    android:fontFamily="@font/montserrat_semi_bold"
+                                    android:gravity="center_vertical"
+                                    android:text="Foto Toko"
+                                    android:textColor="@color/blue"
+                                    android:textSize="13sp" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="155dp"
+                                    android:layout_height="90dp"
+                                    app:cardCornerRadius="6dp"
+                                    app:cardElevation="0dp"
+                                    app:cardUseCompatPadding="true">
+
+                                    <ImageView
+                                        android:id="@+id/imgStore"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/laundry_img" />
+                                </androidx.cardview.widget.CardView>
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/lytAddStore"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:orientation="vertical"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:visibility="visible">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/add_file" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="3dp"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:text="Foto depan Laundry, untuk memudahkan Pelanggan mencari"
+                                    android:textAlignment="center"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+                        </RelativeLayout>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/lytKoordinat"
@@ -359,8 +464,6 @@
                                 android:scaleType="fitXY"
                                 android:src="@drawable/refresh" />
                         </androidx.cardview.widget.CardView>
-
-
                     </LinearLayout>
 
                 </LinearLayout>
