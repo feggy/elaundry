@@ -71,7 +71,7 @@
                         android:backgroundTint="@color/blue"
                         android:fontFamily="@font/montserrat_regular"
                         android:imeOptions="actionDone"
-                        android:inputType="numberPassword"
+                        android:inputType="textPassword"
                         android:hint="Password"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
