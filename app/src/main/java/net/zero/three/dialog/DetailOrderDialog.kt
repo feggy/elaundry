@@ -185,14 +185,17 @@ class DetailOrderDialog : DialogFragment() {
                         vOrderId.text = it.id_order
                         vInvoiceId.text = it.id_invoice
                         if (it.id_invoice.isNullOrEmpty()) vInvoiceId.text = "-"
-                        if (it.status == Payment.PAID.id.toString()) {
+
+                        if (it.status_payment == Payment.PAID.id.toString()) {
                             vStatusPembayaran.text = "Lunas"
                             footer.visibility = View.GONE
                             lytKodePembayaran.visibility = View.GONE
-                        } else if (it.status == Payment.FAILED.id.toString()) {
+                            lytTotal.visibility = View.VISIBLE
+                        } else if (it.status_payment == Payment.FAILED.id.toString()) {
                             vStatusPembayaran.text = "Dibatalkan"
                             footer.visibility = View.GONE
                             lytKodePembayaran.visibility = View.GONE
+                            lytTotal.visibility = View.VISIBLE
                         } else {
                             vStatusPembayaran.text = "Belum dibayar"
                         }
@@ -202,12 +205,9 @@ class DetailOrderDialog : DialogFragment() {
 
                         if (it.payment_method == PaymentMethod.BRIVA.name) {
                             vMetodePembayaran.text = "BRI Virtual Account"
-                            vStatusPembayaran.text = "Menunggu Pembayaran"
                         } else if (it.payment_method == PaymentMethod.BCAVA.name) {
                             vMetodePembayaran.text = "BCA Virtual Account"
-                            vStatusPembayaran.text = "Menunggu Pembayaran"
                         } else {
-                            vMetodePembayaran.text = "Bayar Nanti"
                             lytKodePembayaran.visibility = View.GONE
                         }
 
@@ -218,6 +218,7 @@ class DetailOrderDialog : DialogFragment() {
                         vKodePembayaran.text = it.pay_code
                         vBiayaLayanan.text = it.biaya_layanan
                         vTotalPembayaran.text = it.total_bayar.toDouble().toCurrency("Rp")
+                        vTotal.text = it.total_bayar.toDouble().toCurrency("Rp")
 
                         totalAmount = it.sub_total
                         adminFee = it.biaya_layanan
@@ -237,10 +238,12 @@ class DetailOrderDialog : DialogFragment() {
                                     btnOrder.text = "Selesaikan"
                                 }
                                 Progress.FINISH.id.toString() -> {
-                                    btnOrder.visibility = View.GONE
+                                    footer.visibility = View.GONE
+                                    lytTotal.visibility = View.VISIBLE
                                 }
                                 Progress.CANCEL.id.toString() -> {
-                                    btnBatalkan.visibility = View.GONE
+                                    footer.visibility = View.GONE
+                                    lytTotal.visibility = View.VISIBLE
                                 }
                             }
                         }

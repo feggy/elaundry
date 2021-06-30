@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -183,6 +184,11 @@ class MainActivity : AppCompatActivity() {
                             lytPemesanan.visibility = View.GONE
                             vStoreDistance.visibility = View.GONE
 
+                            /*val params = lytContentAntrian.layoutParams
+                            params.width = RelativeLayout.LayoutParams.MATCH_PARENT
+                            params.height = RelativeLayout.LayoutParams.MATCH_PARENT
+                            lytContentAntrian.layoutParams = params*/
+
                             if (it.active == Status.REGISTER.id.toString()) {
                                 btnUpgrade.visibility = View.VISIBLE
                             }
@@ -226,6 +232,10 @@ class MainActivity : AppCompatActivity() {
             when (it?.status) {
                 true -> {
                     it.data?.let {
+                        if (it.isNullOrEmpty()) {
+                            vStoreDistance.visibility = View.GONE
+                        }
+
                         it.forEach {
                             val distance = SphericalUtil.computeDistanceBetween(
                                 LatLng(
@@ -268,7 +278,9 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager,
                 it.orderId
             ) {
-
+                val i = intent
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                startActivity(i)
             }
         }
         vRecyclerAntrian.apply {
@@ -308,9 +320,10 @@ class MainActivity : AppCompatActivity() {
                                 )
                             }
                         }
-                        val sort = dataAntrian.sortedByDescending { it.created_at }
+                        /*val sort = dataAntrian.sortedByDescending { it.created_at }
                         dataAntrian.clear()
-                        dataAntrian.addAll(sort)
+                        dataAntrian.addAll(sort)*/
+                        dataAntrian.sortedByDescending { it.created_at }
                         adapterAntrian.notifyDataSetChanged()
                     }
                 }
@@ -458,6 +471,11 @@ class MainActivity : AppCompatActivity() {
                         else -> {
                             vNohp.text = "Belum dibayar"
                         }
+                    }
+                } else {
+                    if (item.status_pengerjaan == Progress.FINISH.id.toString() || item.status_pengerjaan == Progress.CANCEL.id.toString()) {
+                        itemView.visibility = View.GONE
+                        itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
                     }
                 }
 

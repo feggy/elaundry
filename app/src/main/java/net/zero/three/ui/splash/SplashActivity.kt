@@ -70,6 +70,11 @@ class SplashActivity : AppCompatActivity() {
             when (it?.status) {
                 true -> {
                     it.data?.let {
+                        SessionManager.instance.hargaPerKg = it.laundry_per_kg
+                        SessionManager.instance.biayaAdmin = it.fee
+                        SessionManager.instance.userId = it.id
+                        SessionManager.instance.level = it.level
+                        SessionManager.instance.saldo = it.saldo
                         MainActivity.show(this)
                     }
                 }

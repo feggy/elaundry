@@ -143,7 +143,8 @@ data class ResDetailOrder(
     @SerializedName("pay_code") var pay_code : String,
     @SerializedName("sub_total") var sub_total : String,
     @SerializedName("biaya_layanan") var biaya_layanan : String,
-    @SerializedName("total_bayar") var total_bayar : String
+    @SerializedName("total_bayar") var total_bayar : String,
+    @SerializedName("status_payment") var status_payment : String
 )
 
 data class ResWithdrawalHistory(
