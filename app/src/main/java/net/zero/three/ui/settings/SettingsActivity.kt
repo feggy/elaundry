@@ -8,6 +8,7 @@ import android.os.Handler
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_settings.*
+import net.zero.three.JENIS
 import net.zero.three.R
 import net.zero.three.dialog.AppAlertDialog
 import net.zero.three.dialog.InputDialog
@@ -33,6 +34,10 @@ class SettingsActivity : AppCompatActivity() {
     var biayaPerKg = ""
     var biayaFee = ""
     var idMerchant = ""
+    var idReguler = ""
+    var idExpress = ""
+    var idLipat = ""
+    var idSetrika = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,14 +67,40 @@ class SettingsActivity : AppCompatActivity() {
 //            lytFee.visibility = View.VISIBLE
         }
 
-        biayaPerKg = SessionManager.instance.hargaPerKg
         biayaFee = SessionManager.instance.biayaAdmin
         idMerchant = SessionManager.instance.userId.toString()
 
-        Timber.e("_ $biayaPerKg $biayaFee $idMerchant")
+        Timber.e("_ $biayaFee $idMerchant")
 
-        vPerkg.text = biayaPerKg.toDouble().toCurrency("Rp")
         vFee.text = "$biayaFee%"
+
+        _vm.getHarga(idMerchant).observe(this, {
+            when (it?.status) {
+                true -> {
+                    it.data?.let {
+                        it.forEach {
+                            when (it.jenisCucian) {
+                                "Cuci Penuh" -> {
+                                    vReguler.text = it.harga.toDouble().toCurrency("Rp")
+                                }
+                                "Cuci Lipat" -> {
+                                    vLipat.text = it.harga.toDouble().toCurrency("Rp")
+                                }
+                                "Setrika" -> {
+                                    vSetrika.text = it.harga.toDouble().toCurrency("Rp")
+                                }
+                                "Express" -> {
+                                    vExpress.text = it.harga.toDouble().toCurrency("Rp")
+                                }
+                            }
+                        }
+                    }
+                }
+                false -> {
+
+                }
+            }
+        })
     }
 
     private fun eventUI() {
@@ -81,7 +112,6 @@ class SettingsActivity : AppCompatActivity() {
             SessionManager.instance.nohp = ""
             SessionManager.instance.level = ""
             SessionManager.instance.saldo = ""
-            SessionManager.instance.hargaPerKg = ""
             SessionManager.instance.userId = ""
             SessionManager.instance.biayaAdmin = ""
 
@@ -91,31 +121,49 @@ class SettingsActivity : AppCompatActivity() {
             },1000)
         }
 
-        vPerkg.setOnClickListener {
+        vReguler.setOnClickListener {
             InputDialog.show(supportFragmentManager) {
+                vReguler.text = it.toDouble().toCurrency("Rp")
+                idReguler = JENIS.REGULER.id.toString()
                 biayaPerKg = it
-                updateBiaya()
+                updateBiaya(idReguler)
             }
         }
 
-        vFee.setOnClickListener {
+        vExpress.setOnClickListener {
             InputDialog.show(supportFragmentManager) {
-                biayaFee = it
-                updateBiaya()
+                vExpress.text = it.toDouble().toCurrency("Rp")
+                idExpress = JENIS.EXPRESS.id.toString()
+                biayaPerKg = it
+                updateBiaya(idExpress)
+            }
+        }
+
+        vLipat.setOnClickListener {
+            InputDialog.show(supportFragmentManager) {
+                vLipat.text = it.toDouble().toCurrency("Rp")
+                idLipat = JENIS.LIPAT.id.toString()
+                biayaPerKg = it
+                updateBiaya(idLipat)
+            }
+        }
+
+        vSetrika.setOnClickListener {
+            InputDialog.show(supportFragmentManager) {
+                vSetrika.text = it.toDouble().toCurrency("Rp")
+                idSetrika = JENIS.SETRIKA.id.toString()
+                biayaPerKg = it
+                updateBiaya(idSetrika)
             }
         }
     }
 
-    private fun updateBiaya() {
+    private fun updateBiaya(idJenis: String) {
         LoadingDialog.show(supportFragmentManager)
-        _vm.updateBiaya(idMerchant, biayaFee, biayaPerKg).observe(this, {
+        _vm.updateBiaya(idMerchant, biayaFee, biayaPerKg, idJenis).observe(this, {
             LoadingDialog.close(supportFragmentManager)
             when(it?.status) {
                 true -> {
-                    SessionManager.instance.apply {
-                        hargaPerKg = biayaPerKg
-                        biayaAdmin = biayaFee
-                    }
                     initUI()
                 }
                 false -> {

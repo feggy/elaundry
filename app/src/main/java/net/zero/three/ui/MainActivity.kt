@@ -199,7 +199,6 @@ class MainActivity : AppCompatActivity() {
                         myLat = it.latitude
                         myLong = it.longitude
 
-                        SessionManager.instance.hargaPerKg = it.laundry_per_kg
                         SessionManager.instance.biayaAdmin = it.fee
                         SessionManager.instance.userId = it.id
                         SessionManager.instance.level = it.level
@@ -320,10 +319,9 @@ class MainActivity : AppCompatActivity() {
                                 )
                             }
                         }
-                        /*val sort = dataAntrian.sortedByDescending { it.created_at }
+                        val sort = dataAntrian.sortedByDescending { it.created_at }
                         dataAntrian.clear()
-                        dataAntrian.addAll(sort)*/
-                        dataAntrian.sortedByDescending { it.created_at }
+                        dataAntrian.addAll(sort)
                         adapterAntrian.notifyDataSetChanged()
                     }
                 }
@@ -479,7 +477,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                vTgl.text = item.created_at.convertDate("yyyy-MM-dd'T'HH:mm", "dd-MM-yyyy HH:mm")
+//                vTgl.text = item.created_at.convertDate("yyyy-MM-dd'T'HH:mm", "dd-MM-yyyy HH:mm")
+                vTgl.text = item.created_at.convertDate("yyyy-MM-dd", "dd-MM-yyyy")
 
                 itemView.setOnClickListener {
                     callback.invoke(item)

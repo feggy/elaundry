@@ -8,18 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.dialog_input.*
 import net.zero.three.R
 
 class InputDialog: DialogFragment() {
 
     companion object {
-        fun show(fm: FragmentManager, callback: (String) -> Unit) = InputDialog().apply {
+        fun show(fm: FragmentManager, title: String = "", callback: (String) -> Unit) = InputDialog().apply {
             this.callback = callback
+            this.title = title
         }.show(fm, "")
     }
 
     private lateinit var callback: (String) -> Unit
+    var title = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +35,8 @@ class InputDialog: DialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        if (title.isNotEmpty()) vTitle.text = title
 
         btnOk.setOnClickListener {
             dismiss()

@@ -56,4 +56,9 @@ interface AuthInterface {
         @Path("orderId") orderId: String?,
         @Path("status") status: String?,
     ): Call<Resource<ResHistory>>
+
+    @GET("laundry/list/jenis/cucian/merchant/{idMerchant}")
+    fun getHarga(
+        @Path("idMerchant") orderId: String?
+    ): Call<Resource<List<ResHarga>>>
 }

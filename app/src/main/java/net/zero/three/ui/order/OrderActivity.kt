@@ -13,10 +13,7 @@ import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.activity_order.vToolbar
 import net.zero.three.*
 import net.zero.three.api.payload.Resource
-import net.zero.three.api.payload.response.ResDetailAkun
-import net.zero.three.api.payload.response.ResOrder
-import net.zero.three.api.payload.response.ResPayment
-import net.zero.three.api.payload.response.ResStore
+import net.zero.three.api.payload.response.*
 import net.zero.three.dialog.*
 import net.zero.three.persistant.SessionManager
 import net.zero.three.ui.MainActivity
@@ -53,6 +50,10 @@ class OrderActivity : AppCompatActivity() {
 
     var hargaPerKg = ""
     var admin = 0.0
+    var idJenis = 0
+
+    val dataJenis = ArrayList<ListUniversalDialog.Item>()
+    val resHarga = ArrayList<ResHarga>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +71,7 @@ class OrderActivity : AppCompatActivity() {
         initData()
         initUI()
         eventUI()
+        getDataJenis()
     }
 
     private fun initData() {
@@ -83,20 +85,25 @@ class OrderActivity : AppCompatActivity() {
         vBerat.text = "0.0".toEditable()
 
         if (SessionManager.instance.level == "Merchant") {
-            hargaPerKg = SessionManager.instance.hargaPerKg
-            admin = SessionManager.instance.biayaAdmin.toDouble()/100
+            admin = SessionManager.instance.biayaAdmin.toDouble() / 100
         } else {
             _vm.getStoreDetail(resStore.no_hp).observe(this, {
                 when (it?.status) {
                     true -> {
                         it.data?.let {
-                            hargaPerKg = it.laundry_per_kg
-                            admin = it.fee.toDouble()/100
+                            admin = it.fee.toDouble() / 100
                         }
                     }
                 }
             })
         }
+
+        _vm.hargaPerKg.observe(this, {
+            it?.let {
+                hargaPerKg = it
+                _vm.berat.value = 0.0
+            }
+        })
 
         _vm.berat.observe(this, {
             it?.let {
@@ -202,10 +209,67 @@ class OrderActivity : AppCompatActivity() {
                 }
             }
         }
+
+        vHarga.setOnClickListener {
+            InputDialog.show(supportFragmentManager, "Harga") {
+                vHarga.text = it.toDouble().toCurrency("Rp")
+
+                hargaPerKg = it
+                totalAmount = hargaPerKg.toInt().toDouble()
+                adminFee = totalAmount * admin
+                grandTotal = totalAmount + adminFee
+
+                vTotalAmount.text = totalAmount.toCurrency("Rp")
+                vBiayaLayanan.text = adminFee.toCurrency("Rp")
+                vGrandTotal.text = grandTotal.toCurrency("Rp")
+                vTotalPembayaran.text = grandTotal.toCurrency("Rp")
+            }
+        }
+
+        vJenis.setOnClickListener {
+            ListUniversalDialog.show(supportFragmentManager, dataJenis, "Jenis Cucian") {
+                idJenis = it.id!!
+                vJenis.text = it.name
+                _vm.hargaPerKg.value = resHarga.find { res-> res.jenisCucian == it.name }?.harga ?: "0"
+                if (it.name == "Satuan") {
+                    lytHarga.visibility = View.VISIBLE
+                    lytBerat.visibility = View.GONE
+                } else {
+                    lytHarga.visibility = View.GONE
+                    lytBerat.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun getDataJenis() {
+        _vm.getHarga(resStore.id.toString()).observe(this, {
+            when (it?.status) {
+                true -> {
+                    it.data?.let {
+                        if (it.isNotEmpty()) {
+                            resHarga.addAll(it)
+                            it.forEach {
+                                dataJenis.add(ListUniversalDialog.Item(it.idJenisCucian.toInt(), it.jenisCucian))
+                            }
+                        }
+                        dataJenis.add(ListUniversalDialog.Item(5, "Satuan"))
+                    }
+                }
+                false -> {
+                    AppAlertDialog.show(
+                        supportFragmentManager,
+                        "Oops",
+                        it.message,
+                        error = true
+                    )
+                }
+            }
+        })
     }
 
     private fun validation(): Boolean {
-        if (beratSekarang == 0.0) {
+        if (beratSekarang == 0.0 && idJenis != 5) {
             AppAlertDialog.show(
                 supportFragmentManager,
                 "Oops",
@@ -289,7 +353,8 @@ class OrderActivity : AppCompatActivity() {
             totalAmount.toInt().toString(),
             amountSatuan.toString(),
             adminFee.toInt().toString(),
-            vCatatan.text.toString()
+            vCatatan.text.toString(),
+            idJenis.toString()
         ).observe(this, {
             LoadingDialog.close(supportFragmentManager)
             when (it?.status) {

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.activity_order.*
 import kotlinx.android.synthetic.main.dialog_detail_order.*
 import kotlinx.android.synthetic.main.dialog_detail_order.btnOrder
 import kotlinx.android.synthetic.main.dialog_detail_order.footer
@@ -182,6 +181,25 @@ class DetailOrderDialog : DialogFragment() {
                         vCatatan.text = it.catatan
                         vTotalAmount.text = it.sub_total.toDouble().toCurrency("Rp")
 
+                        when (it.idJenisCucian) {
+                            JENIS.EXPRESS.id.toString() -> {
+                                vJenis.text = "Express"
+                            }
+                            JENIS.SETRIKA.id.toString() -> {
+                                vJenis.text = "Setrika"
+                            }
+                            JENIS.REGULER.id.toString() -> {
+                                vJenis.text = "Cuci Penuh"
+                            }
+                            JENIS.LIPAT.id.toString() -> {
+                                vJenis.text = "Cuci Lipat"
+                            }
+                            else -> {
+                                vJenis.text = "Satuan"
+                                lytBerat.visibility = View.GONE
+                            }
+                        }
+
                         vOrderId.text = it.id_order
                         vInvoiceId.text = it.id_invoice
                         if (it.id_invoice.isNullOrEmpty()) vInvoiceId.text = "-"
@@ -205,9 +223,12 @@ class DetailOrderDialog : DialogFragment() {
 
                         if (it.payment_method == PaymentMethod.BRIVA.name) {
                             vMetodePembayaran.text = "BRI Virtual Account"
+                            lytKodePembayaran.visibility = View.VISIBLE
                         } else if (it.payment_method == PaymentMethod.BCAVA.name) {
                             vMetodePembayaran.text = "BCA Virtual Account"
+                            lytKodePembayaran.visibility = View.VISIBLE
                         } else {
+                            vMetodePembayaran.text = "Bayar Nanti"
                             lytKodePembayaran.visibility = View.GONE
                         }
 
@@ -278,7 +299,7 @@ class DetailOrderDialog : DialogFragment() {
             LoadingDialog.close(childFragmentManager)
             when (it?.status) {
                 true -> {
-                    getDetailOrder()
+                    initUI()
                 }
                 false -> {
                     AppAlertDialog.show(

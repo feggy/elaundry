@@ -375,6 +375,111 @@
                             android:layout_gravity="center_vertical"
                             android:layout_weight="0.8"
                             android:fontFamily="@font/montserrat_regular"
+                            android:text="Jenis Laundry"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/vJenis"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:background="@drawable/bg_rounded_border_grey"
+                                    android:editable="false"
+                                    android:focusable="false"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp"
+                                    tools:text="Cuci Penuh Reguler" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="10dp"
+                                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lytHarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0.8"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:text="Harga"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/vHarga"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:background="@drawable/bg_rounded_border_grey"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="10dp"
+                                    android:paddingRight="10dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lytBerat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0.8"
+                            android:fontFamily="@font/montserrat_regular"
                             android:text="Berat Pakaian @kg"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
@@ -423,7 +528,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/montserrat_regular"
-                        android:text="Catatan"
+                        android:text="Detail Cucian"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
@@ -604,9 +709,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="6dp"
-        app:layout_constraintBottom_toTopOf="@+id/footer"
+        android:alpha=".5"
         android:background="@drawable/top_shadow"
-        android:alpha=".5"/>
+        app:layout_constraintBottom_toTopOf="@+id/footer" />
 
     <RelativeLayout
         android:id="@+id/footer"
@@ -631,25 +736,27 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_toLeftOf="@id/btnOrder"
             android:layout_marginRight="10dp"
-            android:gravity="center_vertical|end">
+            android:layout_toLeftOf="@id/btnOrder"
+            android:gravity="center_vertical|end"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semi_bold"
                 android:text="Total Pembayaran"
-                android:textSize="12sp"
                 android:textColor="@color/grey"
-                android:fontFamily="@font/montserrat_semi_bold"/>
+                android:textSize="12sp" />
+
             <TextView
                 android:id="@+id/vTotalPembayaran"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semi_bold"
                 android:text="Rp.0"
-                android:textSize="14sp"
                 android:textColor="#42C0FB"
-                android:fontFamily="@font/montserrat_semi_bold"/>
+                android:textSize="14sp" />
         </LinearLayout>
     </RelativeLayout>
 

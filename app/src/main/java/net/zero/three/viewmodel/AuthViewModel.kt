@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import net.zero.three.api.payload.response.ResHarga
 import net.zero.three.api.repository.AuthRepository
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
@@ -13,6 +14,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     var imageStore = MutableLiveData<Bitmap>()
 
     var berat = MutableLiveData<Double>()
+
+    val hargaPerKg = MutableLiveData<String>()
 
     fun login(nohp: String, pass: String) = authRepository.login(nohp, pass)
 
@@ -52,7 +55,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         amount: String,
         amountSatuan: String,
         fee: String,
-        catatan: String
+        catatan: String,
+        idJenisCucian: String
     ) = authRepository.reqOrder(
         idUser,
         idMerchant,
@@ -61,7 +65,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         amount,
         amountSatuan,
         fee,
-        catatan
+        catatan,
+        idJenisCucian
     )
 
     fun getStore(nearest: Boolean? = false, lat: String? = "", long: String? = "") =
@@ -84,8 +89,9 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun updateBiaya(
         idMerchant: String,
         fee: String,
-        harga: String
-    ) = authRepository.updateBiaya(idMerchant, fee, harga)
+        harga: String,
+        idJenisCucian: String
+    ) = authRepository.updateBiaya(idMerchant, fee, harga, idJenisCucian)
 
     fun reqWithdrawal(
         noHp: String,
@@ -107,4 +113,6 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         orderId: String,
         status: String
     ) = authRepository.updateStatus(orderId, status)
+
+    fun getHarga(idMerchant: String) = authRepository.getHarga(idMerchant)
 }

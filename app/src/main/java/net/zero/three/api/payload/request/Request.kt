@@ -31,7 +31,8 @@ data class ReqOrder(
     @SerializedName("amount") val amount: String,
     @SerializedName("amountSatuan") val amountSatuan: String,
     @SerializedName("fee") val fee: String,
-    @SerializedName("catatan") val catatan: String
+    @SerializedName("catatan") val catatan: String,
+    @SerializedName("idJenisCucian") val idJenisCucian: String
 )
 
 data class ReqStore(
@@ -59,6 +60,7 @@ data class ReqBiaya(
     @SerializedName("idMerchant") val idMerchant : String,
     @SerializedName("fee") val fee : String,
     @SerializedName("harga") val harga : String,
+    @SerializedName("idJenisCucian") val idJenisCucian : String
 )
 
 data class ReqWithdrawal(

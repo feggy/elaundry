@@ -166,7 +166,8 @@ class AuthRepository() {
         amount: String,
         amountSatuan: String,
         fee: String,
-        catatan: String
+        catatan: String,
+        idJenisCucian: String
     ): LiveData<Resource<ResOrder>> {
         val liveData = MutableLiveData<Resource<ResOrder>>()
 
@@ -179,7 +180,8 @@ class AuthRepository() {
                 amount,
                 amountSatuan,
                 fee,
-                catatan
+                catatan,
+                idJenisCucian
             )
         )
             .enqueue(object : Callback<Resource<ResOrder>> {
@@ -335,11 +337,12 @@ class AuthRepository() {
     fun updateBiaya(
         idMerchant: String,
         fee: String,
-        harga: String
+        harga: String,
+        idJenisCucian: String
     ): LiveData<Resource<Any>> {
         val liveData = MutableLiveData<Resource<Any>>()
 
-        auth.updateBiaya(ReqBiaya(idMerchant, fee, harga))
+        auth.updateBiaya(ReqBiaya(idMerchant, fee, harga, idJenisCucian))
             .enqueue(object : Callback<Resource<Any>> {
                 override fun onResponse(
                     call: Call<Resource<Any>>,
@@ -490,6 +493,39 @@ class AuthRepository() {
 
                 override fun onFailure(
                     call: Call<Resource<ResHistory>>,
+                    t: Throwable
+                ) {
+                    Log.e("ONFAILURE", "$t")
+                }
+            })
+        return liveData
+    }
+
+    fun getHarga(
+        idMerchant: String
+    ): LiveData<Resource<List<ResHarga>>> {
+        val liveData = MutableLiveData<Resource<List<ResHarga>>>()
+
+        auth.getHarga(idMerchant)
+            .enqueue(object : Callback<Resource<List<ResHarga>>> {
+                override fun onResponse(
+                    call: Call<Resource<List<ResHarga>>>,
+                    response: Response<Resource<List<ResHarga>>>
+                ) {
+                    if (response.isSuccessful) {
+                        liveData.value = response.body()
+                    } else {
+                        liveData.value = Resource(
+                            false,
+                            null,
+                            response.body()?.message.toString(),
+                            response.body()?.code
+                        )
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<Resource<List<ResHarga>>>,
                     t: Throwable
                 ) {
                     Log.e("ONFAILURE", "$t")

@@ -162,3 +162,11 @@ enum class PaymentMethod() {
     BRIVA,
     BCAVA
 }
+
+enum class JENIS(val id: Int, val nama: String) {
+    SETRIKA(1, "Setrika"),
+    REGULER(2, "Cuci Penuh"),
+    LIPAT(3, "Cuci Lipat"),
+    EXPRESS(4, "Express"),
+    SATUAN(5, "Satuan")
+}

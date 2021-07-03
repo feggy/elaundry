@@ -436,6 +436,7 @@
                     android:textSize="12sp" />
 
                 <LinearLayout
+                    android:id="@+id/lytBerat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -446,7 +447,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1.5"
                         android:fontFamily="@font/montserrat_regular"
-                        android:text="Berat Laundry"
+                        android:text="Berat"
                         android:textColor="@color/grey"
                         android:textSize="11sp" />
 
@@ -467,14 +468,43 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Jenis"
+                        android:textColor="@color/grey"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/vJenis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:singleLine="true"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        tools:text="Reguler" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_regular"
-                        android:text="Catatan"
+                        android:text="Detail Pesanan"
                         android:textColor="@color/grey"
                         android:textSize="11sp" />
 

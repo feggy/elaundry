@@ -28,14 +28,6 @@ class SessionManager(val context: Context) {
             }
         }
 
-    var hargaPerKg: String
-        get() = pref.getString("hargaPerKg", "") ?: "0"
-        set(value) {
-            pref.edit {
-                putString("hargaPerKg", value)
-            }
-        }
-
     var biayaAdmin: String
         get() = pref.getString("biayaAdmin", "") ?: "0"
         set(value) {

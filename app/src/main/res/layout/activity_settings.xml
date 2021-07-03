@@ -39,43 +39,203 @@
                 android:background="@color/spacer" />
 
             <LinearLayout
-                android:id="@+id/btnNanti"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_kg" />
-
-                <TextView
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/btnNanti"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="Atur harga laundry @kg"
-                    android:textColor="@color/black_title"
-                    android:textSize="13sp" />
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
 
-                <TextView
-                    android:id="@+id/vPerkg"
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/bg_rounded_border_grey"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:gravity="center"
-                    android:textSize="12sp"
-                    tools:text="Rp7.000" />
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_kg" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Atur harga laundry @kg"
+                        android:textColor="@color/black_title"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/vPerkg"
+                        android:layout_width="80dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/bg_rounded_border_grey"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:visibility="invisible"
+                        tools:text="Rp7.000" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnReguler"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_kg"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Cuci Penuh Reguler"
+                        android:textColor="@color/black_title"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/vReguler"
+                        android:layout_width="80dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/bg_rounded_border_grey"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:text="Rp.0"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnExpress"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_kg"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Cuci Penuh Express"
+                        android:textColor="@color/black_title"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/vExpress"
+                        android:layout_width="80dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/bg_rounded_border_grey"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:text="Rp.0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnLipat"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_kg"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Cuci Lipat"
+                        android:textColor="@color/black_title"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/vLipat"
+                        android:layout_width="80dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/bg_rounded_border_grey"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:text="Rp.0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnSetrika"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_kg"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Setrika"
+                        android:textColor="@color/black_title"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/vSetrika"
+                        android:layout_width="80dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/bg_rounded_border_grey"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:text="Rp.0" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -83,9 +243,7 @@
             android:id="@+id/lytFee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            tools:visibility="visible">
+            android:orientation="vertical">
 
             <View
                 android:layout_width="match_parent"
@@ -96,16 +254,14 @@
                 android:id="@+id/btnBri"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:adjustViewBounds="true"
                     android:src="@drawable/ic_fee" />
 
@@ -122,8 +278,8 @@
                 <TextView
                     android:id="@+id/vFee"
                     android:layout_width="80dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/bg_rounded_border_grey"
+                    android:layout_height="25dp"
+                    android:background="#F3F3F3"
                     android:fontFamily="@font/montserrat_regular"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
@@ -142,16 +298,14 @@
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_logout" />
 
