@@ -120,7 +120,7 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
     var message = ""
     var level = ""
     var imagestore = ""
-    var storeName = ""
+    var storeName = "-"
 
     lateinit var _vm: AuthViewModel
 
@@ -229,6 +229,7 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
         pass = etPassword.text.toString()
         email = etEmail.text.toString()
         storeName = etNamaToko.text.toString()
+        if (storeName.isNullOrEmpty()) storeName = "-"
 
         LoadingDialog.show(supportFragmentManager)
 

@@ -79,7 +79,7 @@ class ProfileActivity : AppCompatActivity() {
 
                         Glide.with(applicationContext)
                             .load(url+it.image_store)
-                            .error(R.drawable.ic_close)
+                            .error(R.drawable.ic_logo)
                             .listener(object : RequestListener<Drawable> {
                                 override fun onLoadFailed(
                                     e: GlideException?,

@@ -91,7 +91,7 @@ class RiwayatAntrianActivity : AppCompatActivity() {
                     }
                 }
                 false -> {
-
+                    lytNotFound.visibility = View.VISIBLE
                 }
             }
         })

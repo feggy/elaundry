@@ -63,6 +63,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_regular"
+                        android:textStyle="bold"
                         android:text="Atur harga laundry @kg"
                         android:textColor="@color/black_title"
                         android:textSize="13sp" />

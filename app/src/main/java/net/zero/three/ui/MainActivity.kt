@@ -304,7 +304,7 @@ class MainActivity : AppCompatActivity() {
             when (it?.status) {
                 true -> {
                     it.data?.let {
-                        Timber.e("_Reshistory $it")
+                        btnOrder.visibility = View.GONE
                         it.forEach {
                             if (it.status_pengerjaan != Progress.CANCEL.id.toString() || it.status_pengerjaan != Progress.FINISH.id.toString()) {
                                 dataAntrian.add(
@@ -331,36 +331,35 @@ class MainActivity : AppCompatActivity() {
 
     private fun getDataAntrianMerchant() {
         dataAntrian.clear()
+        vDescAntrian.text = "Belum ada pesanan"
+        btnOrder.isEnabled = false
         LoadingDialog.show(supportFragmentManager)
         _vm.getTransactionCustomer(SessionManager.instance.userId!!).observe(this, {
             LoadingDialog.close(supportFragmentManager)
             when (it?.status) {
                 true -> {
                     it.data?.let {
-                        if (it.isNullOrEmpty()) {
-                            btnOrder.visibility = View.VISIBLE
-                        } else {
-                            it.forEach {
-                                dataAntrian.add(
-                                    Antrian(
-                                        it.id_order,
-                                        SessionManager.instance.userId!!,
-                                        it.nama_pelanggan,
-                                        it.hp_pelanggan,
-                                        it.status,
-                                        it.created_at
-                                    )
+                        btnOrder.visibility = View.GONE
+                        it.forEach {
+                            dataAntrian.add(
+                                Antrian(
+                                    it.id_order,
+                                    SessionManager.instance.userId!!,
+                                    it.nama_pelanggan,
+                                    it.hp_pelanggan,
+                                    it.status,
+                                    it.created_at
                                 )
-                            }
-                            val sort = dataAntrian.sortedByDescending { it.created_at }
-                            dataAntrian.clear()
-                            dataAntrian.addAll(sort)
-                            adapterAntrian.notifyDataSetChanged()
+                            )
                         }
+                        val sort = dataAntrian.sortedByDescending { it.created_at }
+                        dataAntrian.clear()
+                        dataAntrian.addAll(sort)
+                        adapterAntrian.notifyDataSetChanged()
                     }
                 }
                 false -> {
-
+                    btnOrder.visibility = View.VISIBLE
                 }
             }
         })
