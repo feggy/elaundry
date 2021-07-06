@@ -48,6 +48,8 @@ import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.default
 import java.io.ByteArrayOutputStream
 import java.io.File
+import android.text.TextUtils
+import android.util.Patterns
 
 
 class RegisterActivity : AppCompatActivity(), LocationListener {
@@ -234,7 +236,18 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
         LoadingDialog.show(supportFragmentManager)
 
         if (validation()) {
-            _vm.register(nama, nohp, pass, alamat, email, lat.toString(), lng.toString(), level, imagestore, storeName)
+            _vm.register(
+                nama,
+                nohp,
+                pass,
+                alamat,
+                email,
+                lat.toString(),
+                lng.toString(),
+                level,
+                imagestore,
+                storeName
+            )
                 .observe(this, {
                     LoadingDialog.close(supportFragmentManager)
                     when (it?.status) {
@@ -259,12 +272,14 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
                     }
                 })
         } else {
-            LoadingDialog.close(supportFragmentManager)
             AppAlertDialog.show(
                 supportFragmentManager,
                 "Oops",
                 message,
-                error = true
+                error = true,
+                callbackPositive = {
+                    LoadingDialog.close(supportFragmentManager)
+                }
             )
         }
     }
@@ -276,14 +291,20 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
         } else if (nohp.isEmpty()) {
             message = "Nomor hp tidak boleh kosong"
             return false
-        } else if (alamat.isEmpty()) {
-            message = "Alamat tidak boleh kosong"
-            return false
         } else if (pass.isEmpty()) {
             message = "Password tidak boleh kosong"
             return false
+        } else if (alamat.isEmpty()) {
+            message = "Alamat tidak boleh kosong"
+            return false
         } else if (email.isEmpty()) {
             message = "Email tidak boleh kosong"
+            return false
+        } else if (!email.isEmail()) {
+            message = "Email tidak valid"
+            return false
+        } else if (level.isEmpty()) {
+            message = "Pilih jenis akun terlebih dahulu"
             return false
         }
         return true
@@ -484,6 +505,10 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
             e.printStackTrace()
         }
         return loc
+    }
+
+    fun String.isEmail(): Boolean {
+        return this.matches(("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$").toRegex())
     }
 
     private fun getImage(imageUri: Uri): Bitmap {

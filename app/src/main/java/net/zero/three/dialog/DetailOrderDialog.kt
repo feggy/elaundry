@@ -248,6 +248,7 @@ class DetailOrderDialog : DialogFragment() {
                         if (SessionManager.instance.level == "Merchant") {
                             btnBatalkan.visibility = View.VISIBLE
                             btnOrder.visibility = View.VISIBLE
+                            footer.visibility = View.VISIBLE
                             when (it.status) {
                                 Progress.ORDER.id.toString() -> {
                                     btnOrder.text = "Menyetujui"

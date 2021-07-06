@@ -68,7 +68,7 @@ class RiwayatAntrianActivity : AppCompatActivity() {
     }
 
     private fun eventUI() {
-
+        vToolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
     private fun getDataAntrianMerchant() {
