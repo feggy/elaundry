@@ -146,13 +146,13 @@ class RiwayatActivity : AppCompatActivity() {
                 val date = item.created_at.convertDate("yyyy-mm-dd", "dd-mm-yyyy")
                 vTglPesanan.text = "Tanggal pesanan: $date"
 
-                if (item.status_pengerjaan == Progress.APPROVE.name) {
+                if (item.status_pengerjaan == Progress.APPROVE.id.toString()) {
                     vStatus.text = "Disetujui"
-                } else if (item.status_pengerjaan == Progress.CANCEL.name) {
+                } else if (item.status_pengerjaan == Progress.CANCEL.id.toString()) {
                     vStatus.text = "Dibatalkan"
-                } else if (item.status_pengerjaan == Progress.FINISH.name) {
+                } else if (item.status_pengerjaan == Progress.FINISH.id.toString()) {
                     vStatus.text = "Selesai"
-                } else if (item.status_pengerjaan == Progress.PROGRESS.name) {
+                } else if (item.status_pengerjaan == Progress.PROGRESS.id.toString()) {
                     vStatus.text = "Diproses"
                 } else {
                     vStatus.text = "Menunggu"

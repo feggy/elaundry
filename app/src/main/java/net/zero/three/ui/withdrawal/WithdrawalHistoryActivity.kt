@@ -162,7 +162,7 @@ class WithdrawalHistoryActivity : AppCompatActivity() {
                     vStatus.text = Withdrawal.REQUEST.name
                 }
 
-                vTgl.text = item.created_at.convertDate("yyyy-mm-dd", "dd-mm-yyyy")
+                vTgl.text = item.created_at.convertDate("dd-mm-yyyy", "dd-mm-yyyy")
             }
 
         }

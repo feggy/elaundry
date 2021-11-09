@@ -314,7 +314,7 @@
                             android:layout_marginLeft="15dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/montserrat_semi_bold"
-                            android:text="Riwayat Penariakn"
+                            android:text="Riwayat Penarikan"
                             android:textColor="@color/black"
                             android:textSize="13sp" />
 
@@ -410,7 +410,7 @@
                             android:layout_marginLeft="15dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/montserrat_semi_bold"
-                            android:text="Riwayat Pesanan"
+                            android:text="Riwayat Transaksi"
                             android:textColor="@color/black"
                             android:textSize="13sp" />
 

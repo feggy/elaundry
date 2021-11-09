@@ -64,7 +64,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun initUI() {
         if (SessionManager.instance.level == "Merchant") {
             lytPerkg.visibility = View.VISIBLE
-//            lytFee.visibility = View.VISIBLE
+            lytFee.visibility = View.VISIBLE
         }
 
         biayaFee = SessionManager.instance.biayaAdmin
