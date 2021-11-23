@@ -91,8 +91,7 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             it.data?.data?.let {
                 val bitmap = getImage(it)
-                val scaleBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width, 120, true)
-                _vm.imageStore.value = scaleBitmap
+                _vm.imageStore.value = bitmap
             }
         }
 
@@ -156,7 +155,8 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
             it?.let {
                 lytImgStore.visibility = View.VISIBLE
                 lytAddStore.visibility = View.GONE
-                imgStore.setImageBitmap(it)
+                val scaleBitmap = Bitmap.createScaledBitmap(it, it.width, 120, true)
+                imgStore.setImageBitmap(scaleBitmap)
                 imagestore = bitmapToBase64(it)
             }
         })
@@ -186,7 +186,7 @@ class RegisterActivity : AppCompatActivity(), LocationListener {
             ConfirmationDialog.show(
                 supportFragmentManager,
                 "Aturan Foto",
-                "Foto yang digunakan harus berbentuk Landscape, yaitu memanjang kesamping dan menampilkan keseluruhan tampak depan toko Anda",
+                "Foto yang digunakan harus berbentuk landscape atau square (1:1), menampilkan keseluruhan tampak depan toko Anda dengan jelas",
                 "OK",
                 "Batal",
                 callbackPositive = {
